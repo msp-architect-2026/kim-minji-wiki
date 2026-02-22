@@ -475,59 +475,221 @@ curl -k -X POST https://wafer.local/api/images -F "file=@sample_wafer.png" -F "s
 curl -k https://wafer.local/api/images?page=0&size=5
 ```
 
----
-
-## Production-ish Start (GitOps)
-
-> **GitLab CI → Registry → GitOps Repo → ArgoCD Auto Sync → k3s 배포**
-
-### Flow
-
-```text
-git push
-  → GitLab CI (build/push)
-  → GitOps Repo (Helm values tag update)
-  → ArgoCD Auto Sync
-  → k3s Rolling Update
-```
-
-### 1) GitLab Runner (VM-2)
-
-```bash
-gitlab-runner register \
-  --url https://<GITLAB_URL> \
-  --token <RUNNER_TOKEN> \
-  --executor docker \
-  --docker-image docker:24-dind
-```
-
-### 2) ArgoCD Install (gitops namespace)
-
-```bash
-helm repo add argo https://argoproj.github.io/argo-helm
-helm install argocd argo/argo-cd -n gitops --set server.service.type=NodePort
-kubectl -n gitops get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
-```
-
-### 3) Register GitOps Repo + Apply Applications
-
-```bash
-argocd repo add https://<GITLAB_URL>/gitops/helm-charts.git --username oauth2 --password <GITOPS_TOKEN>
-
-kubectl apply -f ./helm-charts/argocd/applications/
-# (fastapi-ai.yaml, backend.yaml, frontend.yaml, mysql.yaml, minio.yaml, monitoring.yaml)
-```
-
-### 4) Verify
-
-```bash
-kubectl get pods -A
-argocd app list
-```
-
-> 🔧 Debug: `kubectl logs`, `kubectl describe pod`, `argocd app get <APP>`
-
 <br>
+
 ---
+
 
 ## API Spec
+
+### Architecture Overview
+
+| Layer | Service | Responsibility |
+|-------|----------|----------------|
+| AI Serving | ![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white) | CNN 9-class inference |
+| Application | ![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=flat-square&logo=springboot&logoColor=white) | Upload, Orchestration, Statistics |
+| Storage | ![MinIO](https://img.shields.io/badge/MinIO-C72E49?style=flat-square&logo=minio&logoColor=white) | Image Object Storage |
+| Database | ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=mysql&logoColor=white) | Inference Result Persistence |
+| Frontend | ![React](https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=black) | Dashboard UI |
+
+---
+
+### FastAPI (AI Serving - Internal Only)
+
+![FastAPI](https://img.shields.io/badge/FastAPI-AI_Serving-009688?style=flat-square&logo=fastapi&logoColor=white)
+![Internal Only](https://img.shields.io/badge/Access-Internal_Only-red?style=flat-square)
+
+<br>
+
+- Namespace: `ai-serving`  
+- External Access: ❌ (Spring Boot only)
+
+<br>
+
+#### Endpoints
+
+| Method | Path | Purpose |
+|--------|------|----------|
+| ![POST](https://img.shields.io/badge/POST-0052CC?style=flat-square&logoColor=white) | `/predict` | Run inference |
+| ![GET](https://img.shields.io/badge/GET-28A745?style=flat-square&logoColor=white) | `/health` | Liveness probe |
+| ![GET](https://img.shields.io/badge/GET-28A745?style=flat-square&logoColor=white) | `/health/ready` | Model readiness |
+| ![GET](https://img.shields.io/badge/GET-28A745?style=flat-square&logoColor=white) | `/metrics` | Prometheus metrics |
+
+<br>
+
+#### POST `/predict`
+
+<br>
+
+#### Request
+```json
+{
+  "imageUrl": "string",
+  "imageId": "uuid",
+  "requestId": "optional"
+}
+```
+
+<br>
+
+#### Response (200)
+```json
+{
+  "prediction": "Edge-Ring",
+  "confidence": 0.95,
+  "modelVersion": "wafer-cnn-v1.0.0",
+  "inferenceTimeMs": 127
+}
+```
+
+<br>
+
+#### Error Codes
+
+| Code | Meaning |
+|------|----------|
+| ![400](https://img.shields.io/badge/400-Bad_Request-red?style=flat-square) | Invalid request |
+| ![422](https://img.shields.io/badge/422-Unprocessable-yellow?style=flat-square) | Image processing failed |
+| ![500](https://img.shields.io/badge/500-Internal_Error-darkred?style=flat-square) | Internal error |
+| ![503](https://img.shields.io/badge/503-Service_Unavailable-orange?style=flat-square) | Model not ready |
+
+---
+
+### Spring Boot (Application Layer)
+
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-Application_Layer-6DB33F?style=flat-square&logo=springboot&logoColor=white)
+
+<br>
+
+- Base Path: `/api/*`
+
+<br>
+
+Core Endpoints
+
+| Method | Path | Description |
+|--------|------|-------------|
+| ![POST](https://img.shields.io/badge/POST-0052CC?style=flat-square) | `/api/images` | Upload + Inference |
+| ![GET](https://img.shields.io/badge/GET-28A745?style=flat-square) | `/api/images` | List results |
+| ![GET](https://img.shields.io/badge/GET-28A745?style=flat-square) | `/api/images/{id}` | Detail |
+| ![DELETE](https://img.shields.io/badge/DELETE-DC3545?style=flat-square) | `/api/images/{id}` | Delete record |
+| ![GET](https://img.shields.io/badge/GET-28A745?style=flat-square) | `/api/images/stats` | Summary statistics |
+| ![GET](https://img.shields.io/badge/GET-28A745?style=flat-square) | `/api/health` | Service health |
+
+<br>
+
+### POST `/api/images`
+
+<br>
+
+- Content-Type: `multipart/form-data`
+
+<br>
+
+#### Request Fields
+
+| Field | Type | Required |
+|-------|------|----------|
+| file | MultipartFile | Yes |
+| source | string | No |
+| lotId | string | No |
+
+<br>
+
+#### Processing Flow
+
+```
+Validate → Upload(MinIO) → FastAPI → Save(MySQL)
+→ WebSocket Push → Slack Alert (confidence ≥ 0.90)
+```
+
+<br>
+
+#### Status Codes
+
+| Code | Meaning |
+|------|----------|
+| ![201](https://img.shields.io/badge/201-Created-brightgreen?style=flat-square) | Success |
+| ![400](https://img.shields.io/badge/400-Bad_Request-red?style=flat-square) | Invalid file |
+| ![413](https://img.shields.io/badge/413-Payload_Too_Large-yellow?style=flat-square) | File too large |
+| ![422](https://img.shields.io/badge/422-Unprocessable-yellow?style=flat-square) | Processing failed |
+| ![502](https://img.shields.io/badge/502-Bad_Gateway-orange?style=flat-square) | AI response error |
+| ![503](https://img.shields.io/badge/503-Service_Unavailable-orange?style=flat-square) | AI unavailable |
+
+---
+
+### GET `/api/images`
+
+Supports pagination and filtering:
+
+```
+?page=0
+&size=20
+&prediction=Edge-Ring
+&defectDetected=true
+&startDate=ISO8601
+```
+
+---
+
+### GET `/api/images/stats`
+
+Returns:
+
+- totalInspected  
+- totalDefectDetected  
+- defectRate  
+- avgConfidence  
+- avgInferenceTimeMs  
+
+---
+
+### WebSocket Events
+
+![WebSocket](https://img.shields.io/badge/WebSocket-STOMP-blue?style=flat-square)
+
+<br>
+
+- Endpoint: `ws://<domain>/ws`  
+- Protocol: STOMP over WebSocket  
+
+<br>
+
+| Topic | Description |
+|--------|-------------|
+| `/topic/predictions` | New inference result |
+| `/topic/alerts` | High-confidence defect |
+| `/topic/stats` | Statistics update |
+| `/topic/system` | System events |
+
+---
+
+### Defect Classes (9-Class)
+
+![9-Class](https://img.shields.io/badge/Defect-9_Class-6C757D?style=flat-square)
+
+<br>
+
+none · Center · Donut · Edge-Loc · Edge-Ring · Loc · Near-full · Random · Scratch
+
+---
+
+### Standard Error Format
+
+```json
+{
+  "timestamp": "...",
+  "status": 400,
+  "code": "INVALID_FILE_FORMAT",
+  "message": "...",
+  "path": "/api/images",
+  "requestId": "..."
+}
+```
+
+---
+
+
+## References
+<br>
+추가 예정
