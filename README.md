@@ -492,7 +492,7 @@ curl -k https://wafer.local/api/images?page=0&size=5
 | Database | ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=mysql&logoColor=white) | Inference Result Persistence |
 | Frontend | ![React](https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=black) | Dashboard UI |
 
----
+
 
 ### FastAPI (AI Serving - Internal Only)
 
@@ -689,6 +689,11 @@ none · Center · Donut · Edge-Loc · Edge-Ring · Loc · Near-full · Random �
 
 ---
 
+### ERD
+
+<img width="1182" height="996" alt="image" src="https://github.com/user-attachments/assets/c32860b7-3c38-47a3-91d9-432a6df50db4" />
+
+---
 
 ## References
 <br>
