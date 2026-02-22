@@ -1,10 +1,38 @@
 # k3s 멀티노드 GitOps 기반 반도체 웨이퍼 결함 검출 시스템
 **On-Prem Semiconductor Wafer Defect Detection System (k3s Multi-node + GitOps)**
 
-<br>
+
 CNN 기반 반도체 웨이퍼 결함 검출의 E2E 품질검사 파이프라인(검출 → 저장 → 시각화)을 구현하고, <br>
 멀티노드 k3s + GitOps(Helm/ArgoCD)로 자동 배포/운영 가능한 온프레미스 인프라 PoC로 구성했습니다.
 
+
+<br>
+
+### 🚀 Orchestration / GitOps
+![Kubernetes](https://img.shields.io/badge/k3s-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white)
+![Helm](https://img.shields.io/badge/Helm-0F1689?style=for-the-badge&logo=helm&logoColor=white)
+![ArgoCD](https://img.shields.io/badge/ArgoCD-EF7B4D?style=for-the-badge&logo=argo&logoColor=white)
+
+### 🔁 CI/CD
+![GitLab](https://img.shields.io/badge/GitLab_CI-FC6D26?style=for-the-badge&logo=gitlab&logoColor=white)
+![GitLab Runner](https://img.shields.io/badge/GitLab_Runner-FC6D26?style=for-the-badge&logo=gitlab&logoColor=white)
+
+### 📊 Observability
+![Prometheus](https://img.shields.io/badge/Prometheus-E6522C?style=for-the-badge&logo=prometheus&logoColor=white)
+![Grafana](https://img.shields.io/badge/Grafana-F46800?style=for-the-badge&logo=grafana&logoColor=white)
+
+### 🌐 Networking
+![Calico](https://img.shields.io/badge/Calico-EE0000?style=for-the-badge&logo=calico&logoColor=white)
+![NGINX](https://img.shields.io/badge/NGINX_Ingress-009639?style=for-the-badge&logo=nginx&logoColor=white)
+
+### 💾 Data / Storage
+![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
+![MinIO](https://img.shields.io/badge/MinIO-C72E49?style=for-the-badge&logo=minio&logoColor=white)
+
+### 🧩 Application
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)
+![React](https://img.shields.io/badge/React_(Vite)-61DAFB?style=for-the-badge&logo=react&logoColor=black)
 <br>
 <br>
 
@@ -317,4 +345,189 @@ helm-charts/
 
 ---
 
+## Getting Started
 
+### Hardware (ARM64 / Apple Silicon)
+
+| Node | Spec | Role |
+|---|---|---|
+| **VM-1** | M5 / 32GB / Ubuntu VM | Control Plane + Core Apps (Backend/Frontend/MySQL/ArgoCD) |
+| **VM-2** | M5 / 32GB / Ubuntu VM | Worker (MinIO/Monitoring/GitLab Runner) |
+| **VM-3** | M2 / 16GB / Ubuntu VM | AI Worker (FastAPI 전용) |
+
+> 💡 All nodes are **ARM64**. On x86, adjust image builds with `--platform`.
+
+### Software
+
+| Tool | Version | Purpose |
+|---|---:|---|
+| k3s | v1.29+ | Kubernetes cluster |
+| kubectl | v1.29+ | Cluster CLI |
+| Helm | v3.14+ | Package manager |
+| Argo CD | v2.10+ | GitOps CD |
+| Calico | v3.27+ | CNI / NetworkPolicy |
+| Docker | v24+ | Image build |
+| GitLab | Self-hosted | CI/CD + Registry |
+
+### Accounts & Tokens
+
+- ✅ GitLab Personal Access Token (Registry push 권한)
+- ✅ (Optional) Slack Incoming Webhook URL
+- ✅ TLS 인증서 (Self-signed 또는 발급)
+
+
+> **Upload → Inference → Result** 최소 파이프라인을 빠르게 구동
+
+### 1) k3s Cluster (VM-1 → VM-2/3 Join)
+
+```bash
+# VM-1 (Control Plane)
+curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="server --cluster-init --flannel-backend=none --disable=traefik --tls-san=<VM1_IP>" sh -
+sudo cat /var/lib/rancher/k3s/server/node-token
+mkdir -p ~/.kube && sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config && sudo chown $(id -u):$(id -g) ~/.kube/config
+
+# VM-2, VM-3 (Worker)
+curl -sfL https://get.k3s.io | K3S_URL="https://<VM1_IP>:6443" K3S_TOKEN="<NODE_TOKEN>" sh -
+```
+
+### 2) Calico CNI
+
+```bash
+kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.27.0/manifests/calico.yaml
+kubectl get nodes -w
+```
+
+### 3) AI Node Isolation (VM-3)
+
+```bash
+kubectl label nodes vm-3 node-role=ai-serving
+kubectl taint nodes vm-3 ai-serving=true:NoSchedule
+```
+
+### 4) Namespaces
+
+```bash
+kubectl create ns infra
+kubectl create ns storage
+kubectl create ns ai-serving
+kubectl create ns application
+kubectl create ns monitoring
+kubectl create ns gitops
+```
+
+### 5) Storage (MySQL / MinIO)
+
+```bash
+kubectl create secret generic mysql-secret -n storage \
+  --from-literal=root-password=<ROOT_PW> \
+  --from-literal=database=wafer_db \
+  --from-literal=username=wafer_user \
+  --from-literal=password=<USER_PW>
+
+kubectl create secret generic minio-secret -n storage \
+  --from-literal=root-user=minioadmin \
+  --from-literal=root-password=<MINIO_PW>
+
+helm install mysql ./helm-charts/mysql -n storage
+helm install minio ./helm-charts/minio -n storage
+kubectl get pods -n storage -w
+```
+
+### 6) Build & Deploy (FastAPI / Backend / Frontend)
+
+```bash
+# FastAPI (AI Serving)
+cd fastapi-ai-serving
+docker build -t <REGISTRY>/fastapi-ai:latest .
+docker push <REGISTRY>/fastapi-ai:latest
+helm install fastapi-ai ./helm-charts/fastapi-ai -n ai-serving
+
+# Spring Boot (Backend)
+cd ../wafer-backend
+docker build -t <REGISTRY>/backend:latest .
+docker push <REGISTRY>/backend:latest
+helm install backend ./helm-charts/backend -n application
+
+# React (Frontend)
+cd ../frontend
+docker build -t <REGISTRY>/frontend:latest .
+docker push <REGISTRY>/frontend:latest
+helm install frontend ./helm-charts/frontend -n application
+```
+
+### 7) Ingress (TLS + ingress-nginx)
+
+```bash
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+  -keyout tls.key -out tls.crt -subj "/CN=wafer.local/O=wafer"
+
+kubectl create secret tls wafer-tls -n infra --cert=tls.crt --key=tls.key
+
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+helm install ingress-nginx ingress-nginx/ingress-nginx -n infra
+```
+
+### 8) Smoke Test
+
+```bash
+curl -k https://wafer.local/api/health
+curl -k -X POST https://wafer.local/api/images -F "file=@sample_wafer.png" -F "source=MANUAL"
+curl -k https://wafer.local/api/images?page=0&size=5
+```
+
+---
+
+## Production-ish Start (GitOps)
+
+> **GitLab CI → Registry → GitOps Repo → ArgoCD Auto Sync → k3s 배포**
+
+### Flow
+
+```text
+git push
+  → GitLab CI (build/push)
+  → GitOps Repo (Helm values tag update)
+  → ArgoCD Auto Sync
+  → k3s Rolling Update
+```
+
+### 1) GitLab Runner (VM-2)
+
+```bash
+gitlab-runner register \
+  --url https://<GITLAB_URL> \
+  --token <RUNNER_TOKEN> \
+  --executor docker \
+  --docker-image docker:24-dind
+```
+
+### 2) ArgoCD Install (gitops namespace)
+
+```bash
+helm repo add argo https://argoproj.github.io/argo-helm
+helm install argocd argo/argo-cd -n gitops --set server.service.type=NodePort
+kubectl -n gitops get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+```
+
+### 3) Register GitOps Repo + Apply Applications
+
+```bash
+argocd repo add https://<GITLAB_URL>/gitops/helm-charts.git --username oauth2 --password <GITOPS_TOKEN>
+
+kubectl apply -f ./helm-charts/argocd/applications/
+# (fastapi-ai.yaml, backend.yaml, frontend.yaml, mysql.yaml, minio.yaml, monitoring.yaml)
+```
+
+### 4) Verify
+
+```bash
+kubectl get pods -A
+argocd app list
+```
+
+> 🔧 Debug: `kubectl logs`, `kubectl describe pod`, `argocd app get <APP>`
+
+<br>
+---
+
+## API Spec
