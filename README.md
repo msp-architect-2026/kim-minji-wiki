@@ -136,507 +136,121 @@ CNN 기반 반도체 웨이퍼 결함 검출의 E2E 품질검사 파이프라인
 
 ---
 
-## Repository Structure
 
-
-
-### FastAPI (AI Serving)
-
-```bash
-fastapi-ai-serving/
-├── app/
-│   ├── main.py                  # FastAPI 엔트리포인트
-│   ├── api/
-│   │   ├── predict.py           # POST /predict
-│   │   └── health.py            # GET /health, /health/ready
-│   ├── core/
-│   │   ├── config.py            # 환경변수 (MinIO URL 등)
-│   │   └── metrics.py           # Prometheus 메트릭
-│   ├── model/
-│   │   ├── loader.py            # CNN 모델 로딩 (startup 시)
-│   │   └── predict.py           # 추론 로직
-│   ├── schema/
-│   │   ├── request.py           # ImageUrlRequest
-│   │   └── response.py          # PredictionResponse
-│   └── util/
-│       └── image_downloader.py  # MinIO 이미지 다운로드
-├── data/
-│   └── wafer_defect_model.h5    # 모델 파일
-├── Dockerfile
-├── requirements.txt
-└── tests/
-```
-
----
-
-### Spring Boot (Application Layer)
-
-```bash
-wafer-backend/
-├── src/main/java/com/wafer/backend/
-│   ├── WaferApplication.java
-│   ├── config/
-│   │   ├── CorsConfig.java
-│   │   ├── RestTemplateConfig.java
-│   │   ├── WebSocketConfig.java          # STOMP WebSocket 설정
-│   │   ├── MinioConfig.java              # MinIO 클라이언트 빈
-│   │   └── ResilienceConfig.java         # CircuitBreaker/Retry 설정
-│   ├── controller/
-│   │   ├── AiPredictionController.java   # POST /api/images
-│   │   ├── AiRecordController.java       # GET/DELETE /api/images/**
-│   │   ├── StatsController.java          # GET /api/images/stats/**
-│   │   └── HealthController.java         # GET /api/health
-│   ├── dto/
-│   │   ├── request/
-│   │   │   ├── PredictRequest.java       # FastAPI 호출용
-│   │   │   └── ImageUploadRequest.java
-│   │   └── response/
-│   │       ├── AiPredictionResponse.java # FastAPI 응답 매핑
-│   │       ├── AiRecordResponseDto.java  # 클라이언트 응답
-│   │       ├── StatsResponse.java
-│   │       ├── DailyStatsResponse.java
-│   │       ├── DefectDistributionResponse.java
-│   │       └── ErrorResponse.java        # 통합 에러 형식
-│   ├── entity/
-│   │   └── WaferImageEntity.java
-│   ├── enums/
-│   │   ├── DefectType.java               # 9-class enum
-│   │   ├── UploadSource.java             # MANUAL/CRONJOB/SIMULATOR
-│   │   └── ProcessingStatus.java         # COMPLETED/PENDING/FAILED
-│   ├── exception/
-│   │   ├── AiRequestSendException.java
-│   │   ├── AiServerException.java
-│   │   ├── FileProcessingException.java
-│   │   ├── InvalidAiResponseException.java
-│   │   └── GlobalExceptionHandler.java   # @RestControllerAdvice
-│   ├── repository/
-│   │   └── WaferImageRepository.java     # JPA + 통계 쿼리
-│   ├── service/
-│   │   ├── AiAnalysisService.java        # FastAPI 호출 + CB
-│   │   ├── WaferImageService.java        # 오케스트레이션 로직
-│   │   ├── StatsService.java             # 통계 집계
-│   │   ├── NotificationService.java      # WebSocket + Slack
-│   │   └── StorageService.java           # MinIO 업/다운로드
-│   └── util/
-│       ├── ImageFileValidator.java
-│       └── MinIOUploader.java               
-├── src/main/resources/
-│   ├── application.yml
-│   └── application-k8s.yml               # k8s 프로파일
-├── Dockerfile
-└── build.gradle
-```
-
----
-
-### Helm Charts / GitOps Repo
-
-```bash
-helm-charts/
-├── wafer-system/
-│   └── Chart.yaml
-├── fastapi-ai/
-│   ├── Chart.yaml
-│   ├── values.yaml
-│   └── templates/
-│       ├── deployment.yaml      # taint/toleration, 3 replicas
-│       ├── service.yaml
-│       ├── hpa.yaml
-│       ├── networkpolicy.yaml   # application namespace만 허용
-│       └── secret.yaml
-├── backend/
-│   ├── Chart.yaml
-│   ├── values.yaml
-│   └── templates/
-│       ├── deployment.yaml
-│       ├── service.yaml
-│       ├── ingress.yaml
-│       └── configmap.yaml
-├── frontend/
-│   ├── Chart.yaml
-│   ├── values.yaml
-│   └── templates/
-│       ├── deployment.yaml
-│       ├── service.yaml
-│       └── ingress.yaml
-├── mysql/
-│   ├── Chart.yaml
-│   ├── values.yaml
-│   └── templates/
-│       ├── statefulset.yaml
-│       ├── pvc.yaml
-│       ├── service.yaml
-│       ├── secret.yaml
-│       └── networkpolicy.yaml
-├── minio/
-│   └── templates/
-├── monitoring/
-│   ├── prometheus/
-│   └── grafana/
-└── argocd/
-    └── applications/            # Argo CD Application CRDs
-        ├── fastapi-ai.yaml
-        ├── backend.yaml
-        ├── frontend.yaml
-        ├── mysql.yaml
-        ├── minio.yaml
-        └── monitoring.yaml
-```
+## Repository Structure (Summary)
 
 <br>
 
----
+![Frontend](https://img.shields.io/badge/Frontend-React-61DAFB?style=flat-square&logo=react&logoColor=black)
+![Backend](https://img.shields.io/badge/Backend-Spring_Boot-6DB33F?style=flat-square&logo=springboot&logoColor=white)
+![AI](https://img.shields.io/badge/AI-FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)
+![GitOps](https://img.shields.io/badge/GitOps-Helm%20%2B%20ArgoCD-0F1689?style=flat-square&logo=helm&logoColor=white)
 
-## Getting Started
+<br>
 
-### Hardware (ARM64 / Apple Silicon)
-
-| Node | Spec | Role |
+| Directory | Badge | Description |
 |---|---|---|
-| **VM-1** | M5 / 32GB / Ubuntu VM | Control Plane + Core Apps (Backend/Frontend/MySQL/ArgoCD) |
-| **VM-2** | M5 / 32GB / Ubuntu VM | Worker (MinIO/Monitoring/GitLab Runner) |
-| **VM-3** | M2 / 16GB / Ubuntu VM | AI Worker (FastAPI 전용) |
+| `frontend/` | ![React](https://img.shields.io/badge/React-UI-61DAFB?style=flat-square&logo=react&logoColor=black) | Dashboard (UI) |
+| `wafer-backend/` | ![Spring](https://img.shields.io/badge/Spring_Boot-API-6DB33F?style=flat-square&logo=springboot&logoColor=white) | Upload / Inference Orchestration / Stats |
+| `fastapi-ai-serving/` | ![FastAPI](https://img.shields.io/badge/FastAPI-AI_Serving-009688?style=flat-square&logo=fastapi&logoColor=white) | Predict / Health / Metrics |
+| `helm-charts/` | ![ArgoCD](https://img.shields.io/badge/ArgoCD-Apps-EF7B4D?style=flat-square&logo=argo&logoColor=white) ![Helm](https://img.shields.io/badge/Helm-Charts-0F1689?style=flat-square&logo=helm&logoColor=white) | Helm Charts + ArgoCD Applications |
 
-> 💡 All nodes are **ARM64**. On x86, adjust image builds with `--platform`.
+<br>
 
-### Software
-
-| Tool | Version | Purpose |
-|---|---:|---|
-| k3s | v1.29+ | Kubernetes cluster |
-| kubectl | v1.29+ | Cluster CLI |
-| Helm | v3.14+ | Package manager |
-| Argo CD | v2.10+ | GitOps CD |
-| Calico | v3.27+ | CNI / NetworkPolicy |
-| Docker | v24+ | Image build |
-| GitLab | Self-hosted | CI/CD + Registry |
-
-### Accounts & Tokens
-
-- ✅ GitLab Personal Access Token (Registry push 권한)
-- ✅ (Optional) Slack Incoming Webhook URL
-- ✅ TLS 인증서 (Self-signed 또는 발급)
-
-
-> **Upload → Inference → Result** 최소 파이프라인을 빠르게 구동
-
-### 1) k3s Cluster (VM-1 → VM-2/3 Join)
-
-```bash
-# VM-1 (Control Plane)
-curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="server --cluster-init --flannel-backend=none --disable=traefik --tls-san=<VM1_IP>" sh -
-sudo cat /var/lib/rancher/k3s/server/node-token
-mkdir -p ~/.kube && sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config && sudo chown $(id -u):$(id -g) ~/.kube/config
-
-# VM-2, VM-3 (Worker)
-curl -sfL https://get.k3s.io | K3S_URL="https://<VM1_IP>:6443" K3S_TOKEN="<NODE_TOKEN>" sh -
-```
-
-### 2) Calico CNI
-
-```bash
-kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.27.0/manifests/calico.yaml
-kubectl get nodes -w
-```
-
-### 3) AI Node Isolation (VM-3)
-
-```bash
-kubectl label nodes vm-3 node-role=ai-serving
-kubectl taint nodes vm-3 ai-serving=true:NoSchedule
-```
-
-### 4) Namespaces
-
-```bash
-kubectl create ns infra
-kubectl create ns storage
-kubectl create ns ai-serving
-kubectl create ns application
-kubectl create ns monitoring
-kubectl create ns gitops
-```
-
-### 5) Storage (MySQL / MinIO)
-
-```bash
-kubectl create secret generic mysql-secret -n storage \
-  --from-literal=root-password=<ROOT_PW> \
-  --from-literal=database=wafer_db \
-  --from-literal=username=wafer_user \
-  --from-literal=password=<USER_PW>
-
-kubectl create secret generic minio-secret -n storage \
-  --from-literal=root-user=minioadmin \
-  --from-literal=root-password=<MINIO_PW>
-
-helm install mysql ./helm-charts/mysql -n storage
-helm install minio ./helm-charts/minio -n storage
-kubectl get pods -n storage -w
-```
-
-### 6) Build & Deploy (FastAPI / Backend / Frontend)
-
-```bash
-# FastAPI (AI Serving)
-cd fastapi-ai-serving
-docker build -t <REGISTRY>/fastapi-ai:latest .
-docker push <REGISTRY>/fastapi-ai:latest
-helm install fastapi-ai ./helm-charts/fastapi-ai -n ai-serving
-
-# Spring Boot (Backend)
-cd ../wafer-backend
-docker build -t <REGISTRY>/backend:latest .
-docker push <REGISTRY>/backend:latest
-helm install backend ./helm-charts/backend -n application
-
-# React (Frontend)
-cd ../frontend
-docker build -t <REGISTRY>/frontend:latest .
-docker push <REGISTRY>/frontend:latest
-helm install frontend ./helm-charts/frontend -n application
-```
-
-### 7) Ingress (TLS + ingress-nginx)
-
-```bash
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-  -keyout tls.key -out tls.crt -subj "/CN=wafer.local/O=wafer"
-
-kubectl create secret tls wafer-tls -n infra --cert=tls.crt --key=tls.key
-
-helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-helm install ingress-nginx ingress-nginx/ingress-nginx -n infra
-```
-
-### 8) Smoke Test
-
-```bash
-curl -k https://wafer.local/api/health
-curl -k -X POST https://wafer.local/api/images -F "file=@sample_wafer.png" -F "source=MANUAL"
-curl -k https://wafer.local/api/images?page=0&size=5
-```
+### Wiki (Detailed Docs)
+| Topic | Link |
+|---|---|
+| 📁 Repository Structure | [Open](../../wiki/Repository-Structure) |
+| 🧩 Architecture & Components | [Open](../../wiki/Architecture-&-Components) |
+| 🧾 API Specification | [Open](../../wiki/API-Specification) |
+| 🛠️ Troubleshooting | [Open](../../wiki/Troubleshooting) |
 
 <br>
 
 ---
 
+## Getting Started (Quick Start)
 
-## API Spec
+![QuickStart](https://img.shields.io/badge/Quick_Start-Upload→Inference→Result-2F80ED?style=flat-square)
+![GitOps](https://img.shields.io/badge/Deploy-GitOps(ArgoCD)-EF7B4D?style=flat-square&logo=argo&logoColor=white)
+![k3s](https://img.shields.io/badge/Kubernetes-k3s-326CE5?style=flat-square&logo=kubernetes&logoColor=white)
 
-### Architecture Overview
-
-| Layer | Service | Responsibility |
-|-------|----------|----------------|
-| AI Serving | ![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white) | CNN 9-class inference |
-| Application | ![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=flat-square&logo=springboot&logoColor=white) | Upload, Orchestration, Statistics |
-| Storage | ![MinIO](https://img.shields.io/badge/MinIO-C72E49?style=flat-square&logo=minio&logoColor=white) | Image Object Storage |
-| Database | ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=mysql&logoColor=white) | Inference Result Persistence |
-| Frontend | ![React](https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=black) | Dashboard UI |
-
-
-
-### FastAPI (AI Serving - Internal Only)
-
-![FastAPI](https://img.shields.io/badge/FastAPI-AI_Serving-009688?style=flat-square&logo=fastapi&logoColor=white)
-![Internal Only](https://img.shields.io/badge/Access-Internal_Only-red?style=flat-square)
+> **Upload → Inference → Result** 최소 파이프라인을 빠르게 확인합니다.  
+> 상세 설치/운영은 Wiki로 분리했습니다.
 
 <br>
 
-- Namespace: `ai-serving`  
-- External Access: ❌ (Spring Boot only)
+### Wiki (Full Guide)
+| Topic | Link |
+|---|---|
+| 🧭 Getting Started (Full) | [Open](../../wiki/Getting-Started-(Full)) |
+| 🧰 Manual Deploy (Helm) | [Open](../../wiki/Manual-Deploy-(Helm)) |
+| 🔁 GitOps Deploy (ArgoCD) | [Open](../../wiki/GitOps-Deploy-(ArgoCD)) |
 
 <br>
 
-#### Endpoints
-
-| Method | Path | Purpose |
-|--------|------|----------|
-| ![POST](https://img.shields.io/badge/POST-0052CC?style=flat-square&logoColor=white) | `/predict` | Run inference |
-| ![GET](https://img.shields.io/badge/GET-28A745?style=flat-square&logoColor=white) | `/health` | Liveness probe |
-| ![GET](https://img.shields.io/badge/GET-28A745?style=flat-square&logoColor=white) | `/health/ready` | Model readiness |
-| ![GET](https://img.shields.io/badge/GET-28A745?style=flat-square&logoColor=white) | `/metrics` | Prometheus metrics |
+### Prerequisites (Checklist)
+- [ ] k3s multi-node cluster + `kubectl` access
+- [ ] Ingress Nginx ready + domain/host decided
+- [ ] GitLab CI/Registry ready + Runner online
+- [ ] MySQL / MinIO Secrets prepared
 
 <br>
 
-#### POST `/predict`
+### Quick Steps (GitOps)
+| Step | Action | Output |
+|---:|---|---|
+| 1 | GitLab CI로 Backend/Frontend/AI **이미지 빌드 & 푸시** | Registry에 이미지 업로드 |
+| 2 | GitOps Repo에서 Helm values의 **image tag/version 갱신 커밋** | Desired State 업데이트 |
+| 3 | ArgoCD **Auto-Sync(권장)** 또는 수동 Sync | k3s에 배포 반영 |
+| 4 | Ingress 엔드포인트로 **UI/API 접속 확인** | 외부 접근 정상 |
+| 5 | **Smoke Test**: Health → Upload → List/Stats | E2E 동작 확인 |
 
 <br>
 
-#### Request
-```json
-{
-  "imageUrl": "string",
-  "imageId": "uuid",
-  "requestId": "optional"
-}
-```
+
+### Endpoints
+
+<!-- Method Badges -->
+![GET](https://img.shields.io/badge/GET-2F80ED?style=flat-square)
+![POST](https://img.shields.io/badge/POST-27AE60?style=flat-square)
+![DELETE](https://img.shields.io/badge/DELETE-EB5757?style=flat-square)
+![WS](https://img.shields.io/badge/WS-9B51E0?style=flat-square)
+![INTERNAL](https://img.shields.io/badge/INTERNAL-333333?style=flat-square)
 
 <br>
 
-#### Response (200)
-```json
-{
-  "prediction": "Edge-Ring",
-  "confidence": 0.95,
-  "modelVersion": "wafer-cnn-v1.0.0",
-  "inferenceTimeMs": 127
-}
-```
+#### External (via Ingress)
+| Component | Base URL | Notes |
+|---|---|---|
+| ![React](https://img.shields.io/badge/React_Dashboard-61DAFB?style=flat-square&logo=react&logoColor=black) | `https://<domain>/` | UI Entry |
+| ![Spring](https://img.shields.io/badge/Spring_Boot_API-6DB33F?style=flat-square&logo=springboot&logoColor=white) | `https://<domain>/api` | Public API Base |
 
 <br>
 
-#### Error Codes
-
-| Code | Meaning |
-|------|----------|
-| ![400](https://img.shields.io/badge/400-Bad_Request-red?style=flat-square) | Invalid request |
-| ![422](https://img.shields.io/badge/422-Unprocessable-yellow?style=flat-square) | Image processing failed |
-| ![500](https://img.shields.io/badge/500-Internal_Error-darkred?style=flat-square) | Internal error |
-| ![503](https://img.shields.io/badge/503-Service_Unavailable-orange?style=flat-square) | Model not ready |
-
----
-
-### Spring Boot (Application Layer)
-
-![Spring Boot](https://img.shields.io/badge/Spring_Boot-Application_Layer-6DB33F?style=flat-square&logo=springboot&logoColor=white)
+#### Spring Boot (Public APIs)
+| Method | Endpoint | Purpose |
+|---|---|---|
+| ![GET](https://img.shields.io/badge/GET-2F80ED?style=flat-square) | `/api/health` | Health check |
+| ![POST](https://img.shields.io/badge/POST-27AE60?style=flat-square) | `/api/images` | Upload → Inference orchestration |
+| ![GET](https://img.shields.io/badge/GET-2F80ED?style=flat-square) | `/api/images` | List records (paging/filter) |
+| ![GET](https://img.shields.io/badge/GET-2F80ED?style=flat-square) | `/api/images/{id}` | Get record detail |
+| ![DELETE](https://img.shields.io/badge/DELETE-EB5757?style=flat-square) | `/api/images/{id}` | Delete record (DB + object) |
+| ![GET](https://img.shields.io/badge/GET-2F80ED?style=flat-square) | `/api/images/stats` | Overall stats |
+| ![GET](https://img.shields.io/badge/GET-2F80ED?style=flat-square) | `/api/images/stats/daily` | Daily stats |
+| ![GET](https://img.shields.io/badge/GET-2F80ED?style=flat-square) | `/api/images/stats/defect-distribution` | Defect distribution |
 
 <br>
 
-- Base Path: `/api/*`
+#### WebSocket (Realtime)
+| Method | Endpoint | Topics | Notes |
+|---|---|---|---|
+| ![WS](https://img.shields.io/badge/WS-9B51E0?style=flat-square) | `ws://<domain>/ws` | `/topic/predictions`, `/topic/alerts`, `/topic/stats`, `/topic/system` | STOMP, SockJS fallback |
 
 <br>
 
-Core Endpoints
-
-| Method | Path | Description |
-|--------|------|-------------|
-| ![POST](https://img.shields.io/badge/POST-0052CC?style=flat-square) | `/api/images` | Upload + Inference |
-| ![GET](https://img.shields.io/badge/GET-28A745?style=flat-square) | `/api/images` | List results |
-| ![GET](https://img.shields.io/badge/GET-28A745?style=flat-square) | `/api/images/{id}` | Detail |
-| ![DELETE](https://img.shields.io/badge/DELETE-DC3545?style=flat-square) | `/api/images/{id}` | Delete record |
-| ![GET](https://img.shields.io/badge/GET-28A745?style=flat-square) | `/api/images/stats` | Summary statistics |
-| ![GET](https://img.shields.io/badge/GET-28A745?style=flat-square) | `/api/health` | Service health |
-
-<br>
-
-### POST `/api/images`
-
-<br>
-
-- Content-Type: `multipart/form-data`
-
-<br>
-
-#### Request Fields
-
-| Field | Type | Required |
-|-------|------|----------|
-| file | MultipartFile | Yes |
-| source | string | No |
-| lotId | string | No |
-
-<br>
-
-#### Processing Flow
-
-```
-Validate → Upload(MinIO) → FastAPI → Save(MySQL)
-→ WebSocket Push → Slack Alert (confidence ≥ 0.90)
-```
-
-<br>
-
-#### Status Codes
-
-| Code | Meaning |
-|------|----------|
-| ![201](https://img.shields.io/badge/201-Created-brightgreen?style=flat-square) | Success |
-| ![400](https://img.shields.io/badge/400-Bad_Request-red?style=flat-square) | Invalid file |
-| ![413](https://img.shields.io/badge/413-Payload_Too_Large-yellow?style=flat-square) | File too large |
-| ![422](https://img.shields.io/badge/422-Unprocessable-yellow?style=flat-square) | Processing failed |
-| ![502](https://img.shields.io/badge/502-Bad_Gateway-orange?style=flat-square) | AI response error |
-| ![503](https://img.shields.io/badge/503-Service_Unavailable-orange?style=flat-square) | AI unavailable |
-
-
-
-### GET `/api/images`
-
-Supports pagination and filtering:
-
-```
-?page=0
-&size=20
-&prediction=Edge-Ring
-&defectDetected=true
-&startDate=ISO8601
-```
-
-
-
-### GET `/api/images/stats`
-
-Returns:
-
-- totalInspected  
-- totalDefectDetected  
-- defectRate  
-- avgConfidence  
-- avgInferenceTimeMs  
-
----
-
-### WebSocket Events
-
-![WebSocket](https://img.shields.io/badge/WebSocket-STOMP-blue?style=flat-square)
-
-<br>
-
-- Endpoint: `ws://<domain>/ws`  
-- Protocol: STOMP over WebSocket  
-
-<br>
-
-| Topic | Description |
-|--------|-------------|
-| `/topic/predictions` | New inference result |
-| `/topic/alerts` | High-confidence defect |
-| `/topic/stats` | Statistics update |
-| `/topic/system` | System events |
-
----
-
-### Defect Classes (9-Class)
-
-![9-Class](https://img.shields.io/badge/Defect-9_Class-6C757D?style=flat-square)
-
-<br>
-
-none · Center · Donut · Edge-Loc · Edge-Ring · Loc · Near-full · Random · Scratch
-
----
-
-### Standard Error Format
-
-```json
-{
-  "timestamp": "...",
-  "status": 400,
-  "code": "INVALID_FILE_FORMAT",
-  "message": "...",
-  "path": "/api/images",
-  "requestId": "..."
-}
-```
-
----
-
-### ERD
-
-<img width="1182" height="996" alt="image" src="https://github.com/user-attachments/assets/c32860b7-3c38-47a3-91d9-432a6df50db4" />
-
----
-
-## References
-<br>
-추가 예정
+#### Internal Only (Cluster)
+| Scope | Component | Base URL | Endpoints |
+|---|---|---|---|
+| ![INTERNAL](https://img.shields.io/badge/INTERNAL-333333?style=flat-square) | ![FastAPI](https://img.shields.io/badge/FastAPI_AI-009688?style=flat-square&logo=fastapi&logoColor=white) | `http://fastapi-service.ai-serving:8000` | ![POST](https://img.shields.io/badge/POST-27AE60?style=flat-square) `/predict` · ![GET](https://img.shields.io/badge/GET-2F80ED?style=flat-square) `/health` · ![GET](https://img.shields.io/badge/GET-2F80ED?style=flat-square) `/health/ready` · ![GET](https://img.shields.io/badge/GET-2F80ED?style=flat-square) `/metrics` |
+| ![INTERNAL](https://img.shields.io/badge/INTERNAL-333333?style=flat-square) | ![Spring](https://img.shields.io/badge/Spring_Boot_Internal-6DB33F?style=flat-square&logo=springboot&logoColor=white) | `http://backend-service.application:8080` | (Cluster internal service-to-service) |
