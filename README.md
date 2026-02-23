@@ -96,64 +96,6 @@ CNN 기반 반도체 웨이퍼 결함 검출의 E2E 품질검사 파이프라인
    온프레미스 환경에서 요구되는 기본 보안 통제를 반영했습니다.
 <br>
 
----
-
-## Tech Stack (역할/종류/선정 근거)
-
-### 인프라
-| Layer | Tech | 책임 | 선정 근거 |
-|---|---|---|---|
-| Orchestration | ![k3s](https://img.shields.io/badge/k3s-326CE5?style=flat-square&logo=kubernetes&logoColor=white) | 멀티노드 Kubernetes 클러스터 구성/운영 | 경량 배포로 온프레미스 VM에서 멀티노드 구성에 적합 |
-| CNI / Network | ![Calico](https://img.shields.io/badge/Calico-EE0000?style=flat-square&logo=calico&logoColor=white) | Pod 네트워크 + NetworkPolicy 기반 트래픽 제어 | 멀티노드 환경에서 정책 기반 제어 지원에 유리 |
-| Ingress | ![NGINX Ingress](https://img.shields.io/badge/NGINX_Ingress-009639?style=flat-square&logo=nginx&logoColor=white) | 외부 트래픽 진입점(라우팅), TLS Termination | K8s Ingress 운영 표준에 가깝고 리버스 프록시 성능이 우수 |
-| Autoscaling | ![HPA](https://img.shields.io/badge/HPA-326CE5?style=flat-square&logo=kubernetes&logoColor=white) ![metrics-server](https://img.shields.io/badge/metrics--server-326CE5?style=flat-square&logo=kubernetes&logoColor=white) | 부하 기반 replica 자동 확장/축소 | 운영형 스케일링 검증을 위한 기본 구성요소 |
-
-<br/>
-
-### 배포
-| Layer | Tech | 책임 | 선정 근거 |
-|---|---|---|---|
-| Packaging | ![Helm](https://img.shields.io/badge/Helm-0F1689?style=flat-square&logo=helm&logoColor=white) | 배포 템플릿(Chart) + 환경별 values 관리 | 재현성과 유지보수성을 높이는 배포 표준화 |
-| GitOps CD | ![Argo CD](https://img.shields.io/badge/Argo_CD-EF7B4D?style=flat-square&logo=argo&logoColor=white) | Git 기준 선언형 배포, Auto Sync/롤백 흐름 | GitOps 표준 도구로 운영 자동화에 적합 |
-| CI | ![GitLab CI](https://img.shields.io/badge/GitLab_CI-FC6D26?style=flat-square&logo=gitlab&logoColor=white) ![Runner](https://img.shields.io/badge/Runner-FC6D26?style=flat-square&logo=gitlab&logoColor=white) | 빌드/테스트/이미지 푸시 자동화 | Pipeline as Code로 배포 흐름 표준화 가능 |
-| Registry | ![GitLab Registry](https://img.shields.io/badge/GitLab_Registry-FC6D26?style=flat-square&logo=gitlab&logoColor=white) | 컨테이너 이미지 저장/배포 연계 | CI/CD와 통합된 사설 레지스트리 운영에 적합 |
-
-<br/>
-
-### 관측
-| Layer | Tech | 책임 | 선정 근거 |
-|---|---|---|---|
-| Metrics | ![Prometheus](https://img.shields.io/badge/Prometheus-E6522C?style=flat-square&logo=prometheus&logoColor=white) | 노드/Pod/서비스 메트릭 수집 | K8s 환경 표준에 가까운 Pull 기반 수집/PromQL |
-| Visualization | ![Grafana](https://img.shields.io/badge/Grafana-F46800?style=flat-square&logo=grafana&logoColor=white) | 대시보드 시각화 및 알림 통합 | 실시간 대시보드 구성과 운영 공유에 유리 |
-
-<br/>
-
-### 데이터
-| Layer | Tech | 책임 | 선정 근거 |
-|---|---|---|---|
-| Object Storage | ![MinIO](https://img.shields.io/badge/MinIO-C72E49?style=flat-square&logo=minio&logoColor=white) | 이미지/아티팩트 객체 저장(S3 호환) | 온프레미스에서 S3 호환 객체 스토리지를 경량으로 운영 |
-| DB | ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=mysql&logoColor=white) | 추론 결과/메타데이터 영속 저장 | 트랜잭션 안정성과 Spring Boot(JPA) 연동이 용이 |
-
-<br/>
-
-### 애플리케이션
-| Layer | Tech | 책임 | 선정 근거 |
-|---|---|---|---|
-| AI Serving | ![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white) | CNN 추론 API 서빙(멀티 레플리카) | 경량 서빙에 적합, 배포 단위 분리에 유리 |
-| Backend | ![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=flat-square&logo=springboot&logoColor=white) | 품질검사 흐름 오케스트레이션/API | 서비스 구조화 및 운영 관점 확장에 유리 |
-| Frontend | ![React](https://img.shields.io/badge/React_(Vite)-61DAFB?style=flat-square&logo=react&logoColor=black) | 결과 조회/시각화 대시보드 UI | SPA/컴포넌트 기반으로 실시간 UI 확장에 유리 |
-
-<br/>
-
-### 보안
-| Layer | Tech | 책임 | 선정 근거 |
-|---|---|---|---|
-| Secret 관리 | ![K8s Secret](https://img.shields.io/badge/K8s_Secret-326CE5?style=flat-square&logo=kubernetes&logoColor=white) ![Sealed Secrets](https://img.shields.io/badge/Sealed_Secrets-326CE5?style=flat-square&logo=kubernetes&logoColor=white) | 민감정보 GitOps 운영(암호화/복호화 흐름) | GitOps 환경에서 시크릿을 안전하게 버전관리하기 위함 |
-| Access Control | ![RBAC](https://img.shields.io/badge/RBAC-Kubernetes-326CE5?style=flat-square&logo=kubernetes&logoColor=white) | 최소권한 기반 리소스 접근 제어 | Kubernetes 표준 접근제어로 운영 통제에 적합 |
-| TLS | ![TLS](https://img.shields.io/badge/TLS-NGINX_Ingress-009639?style=flat-square&logo=nginx&logoColor=white) | 외부 트래픽 암호화(셀프사인 → 확장 가능) | 실습/운영 난이도가 낮고 온프레미스에 현실적 |
-
-
-<br>
 
 ---
 
@@ -616,7 +558,7 @@ Validate → Upload(MinIO) → FastAPI → Save(MySQL)
 | ![502](https://img.shields.io/badge/502-Bad_Gateway-orange?style=flat-square) | AI response error |
 | ![503](https://img.shields.io/badge/503-Service_Unavailable-orange?style=flat-square) | AI unavailable |
 
----
+
 
 ### GET `/api/images`
 
@@ -630,7 +572,7 @@ Supports pagination and filtering:
 &startDate=ISO8601
 ```
 
----
+
 
 ### GET `/api/images/stats`
 
