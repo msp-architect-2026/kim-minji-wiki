@@ -117,6 +117,8 @@ CNN 기반 반도체 웨이퍼 결함 검출의 E2E 품질검사 파이프라인
 
 <br/>
 
+<br>
+
 ### Application Architecture
 <img width="1980" height="998" alt="image" src="https://github.com/user-attachments/assets/57011b1a-5ebf-4aa7-9902-e0e1c3895718" />
 
