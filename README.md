@@ -277,7 +277,6 @@ CNN 기반 반도체 웨이퍼 결함 검출의 E2E 품질검사 파이프라인
 ![WS](https://img.shields.io/badge/WS-9B51E0?style=flat-square)
 ![INTERNAL](https://img.shields.io/badge/INTERNAL-333333?style=flat-square)
 
-<br>
 
 #### External (via Ingress)
 | Component | Base URL | Notes |
@@ -285,7 +284,7 @@ CNN 기반 반도체 웨이퍼 결함 검출의 E2E 품질검사 파이프라인
 | ![React](https://img.shields.io/badge/React_Dashboard-61DAFB?style=flat-square&logo=react&logoColor=black) | `https://<domain>/` | UI Entry |
 | ![Spring](https://img.shields.io/badge/Spring_Boot_API-6DB33F?style=flat-square&logo=springboot&logoColor=white) | `https://<domain>/api` | Public API Base |
 
-<br>
+
 
 #### Spring Boot (Public APIs)
 | Method | Endpoint | Purpose |
@@ -299,14 +298,14 @@ CNN 기반 반도체 웨이퍼 결함 검출의 E2E 품질검사 파이프라인
 | ![GET](https://img.shields.io/badge/GET-2F80ED?style=flat-square) | `/api/images/stats/daily` | Daily stats |
 | ![GET](https://img.shields.io/badge/GET-2F80ED?style=flat-square) | `/api/images/stats/defect-distribution` | Defect distribution |
 
-<br>
+
 
 #### WebSocket (Realtime)
 | Method | Endpoint | Topics | Notes |
 |---|---|---|---|
 | ![WS](https://img.shields.io/badge/WS-9B51E0?style=flat-square) | `ws://<domain>/ws` | `/topic/predictions`, `/topic/alerts`, `/topic/stats`, `/topic/system` | STOMP, SockJS fallback |
 
-<br>
+
 
 #### Internal Only (Cluster)
 | Scope | Component | Base URL | Endpoints |
