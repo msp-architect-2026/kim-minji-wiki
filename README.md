@@ -2,10 +2,11 @@
 <!--           HEADER               -->
 <!-- =============================== -->
 
-<h1 align="center">🧠 On-Premise AI Inference Platform</h1>
+<h1 align="center">🧠 On-Premise Wafer Defect Inference Platform</h1>
 
 <p align="center">
-멀티노드 k3s 기반 AI 워크로드 운영을 위한 인프라 설계 및 GitOps 배포 플랫폼
+멀티노드 k3s 기반으로 웨이퍼 불량 유형을 자동 분류하고  
+AI 워크로드를 안정적으로 운영하기 위한 인프라 설계 및 GitOps 배포 플랫폼
 </p>
 
 <p align="center">
