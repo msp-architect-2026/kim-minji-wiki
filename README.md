@@ -68,6 +68,53 @@ CNN 기반 반도체 웨이퍼 결함 검출의 E2E 품질검사 파이프라인
 - **보안/통제**: 접근 통제와 시크릿/권한 관리로 운영 리스크 절감  
 <br>
 
+
+
+---
+
+
+## Dataset & Model
+
+![Dataset](https://img.shields.io/badge/Dataset-WM--811K_(LSWMD)-4C8BF5?style=flat-square)
+![Input](https://img.shields.io/badge/Input-26×26×3_RGB-555?style=flat-square)
+![Classes](https://img.shields.io/badge/Classes-9--Class-27AE60?style=flat-square)
+![Framework](https://img.shields.io/badge/Framework-TensorFlow%20%2F%20Keras-FF6F00?style=flat-square)
+![Artifact](https://img.shields.io/badge/Model_Artifact-H5-6C757D?style=flat-square)
+
+<br>
+
+### Dataset
+| Item | Value |
+|---|---|
+| Name | **WM-811K (LSWMD)** |
+| Why | 실물 웨이퍼/장비 부재 환경에서 **디지털 트윈 기반 PoC**를 재현하기 위해 공개 데이터셋 활용 |
+| Size | **811K wafer maps** |
+| Labels | **9-class**: `Center`, `Donut`, `Edge-Loc`, `Edge-Ring`, `Loc`, `Near-full`, `Random`, `Scratch`, `None` |
+| Input Format | **26×26×3 (RGB)** (원형 유지, 실시간 추론 적합) |
+| Notes | 실제 Fab 데이터가 아닌 **공개 데이터 기반 PoC**이며, 운영/배포 재현성 검증에 초점 |
+
+<br>
+
+### Model
+| Item | Value |
+|---|---|
+| Task | Wafer defect **multi-class classification (9-class)** |
+| Architecture | **CNN** (small image 최적화) |
+| Framework | **TensorFlow / Keras** |
+| Output | 9-class probability distribution |
+| Artifact | **H5** (컨테이너 내부 내장 배포) |
+| Serving | FastAPI `POST /predict` (cluster internal only) |
+| Versioning | `model_version` (DB 저장 + 추론 결과와 함께 관리) |
+
+
+
+
+
+<!-- Source basis: WM-811K(LSWMD) 활용, 26×26×3 입력, 9-class 분류, TF/Keras, H5 포맷 근거 -->
+<!-- :contentReference[oaicite:0]{index=0} -->
+
+<br>
+
 ---
 
 ## Key Features
