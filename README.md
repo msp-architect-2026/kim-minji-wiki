@@ -68,6 +68,7 @@ GitOps 기반 인프라 설계 플랫폼
 <img src="https://img.shields.io/badge/Helm-0F1689?style=for-the-badge&logo=helm&logoColor=white"/>
 <img src="https://img.shields.io/badge/ArgoCD-FE5D26?style=for-the-badge&logo=argo&logoColor=white"/>
 <img src="https://img.shields.io/badge/MinIO-C72E49?style=for-the-badge&logo=minio&logoColor=white"/>
+<img src="https://img.shields.io/badge/GitLab%20CI-FCA121?style=for-the-badge&logo=gitlab&logoColor=white"/>
 </p>
 
 ### 📊 Observability
@@ -103,8 +104,11 @@ GitOps 기반 인프라 설계 플랫폼
 | Worker Node | 스토리지 및 관측 | <img src="https://img.shields.io/badge/MinIO-C72E49?style=flat-square&logo=minio&logoColor=white"/> <img src="https://img.shields.io/badge/Prometheus-E6522C?style=flat-square&logo=prometheus&logoColor=white"/> <img src="https://img.shields.io/badge/Grafana-F46800?style=flat-square&logo=grafana&logoColor=white"/> |
 | AI Worker | AI 추론 전용 노드 | <img src="https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white"/> <img src="https://img.shields.io/badge/Taints%20%26%20Tolerations-Isolated-orange?style=flat-square"/> |
 
-📖 상세 하드웨어 사양 및 리소스 구성은  
-➡ **[개발 환경 문서에서 확인](../../wiki/기술-문서/개발-환경)**
+
+
+
+
+📖 상세 하드웨어 사양 및 리소스 구성은 **[개발 환경](https://github.com/msp-architect-2026/kim-minji/wiki/%EA%B0%9C%EB%B0%9C-%ED%99%98%EA%B2%BD)** 에 정리되어 있습니다.
 
 ---
 
@@ -126,11 +130,11 @@ GitOps 기반 인프라 설계 플랫폼
 
 | 문서 | 바로가기 |
 |------|----------|
-| 📖 Wiki 전체 문서 | [Wiki 이동](../../wiki) |
-| 🔗 API 명세 | [API 명세 보기](../../wiki/기술-문서/API-명세) |
-| 🗂 데이터 모델 및 ERD | [데이터 모델 보기](../../wiki/기술-문서/데이터-모델-및-ERD) |
-| 🛠 트러블슈팅 | [트러블슈팅 보기](../../wiki/기술-문서/트러블슈팅) |
-| 🚀 설치 가이드 | [설치 가이드 보기](../../wiki/프로젝트/설치-가이드) |
+| 📖 Wiki 전체 문서 | [Wiki 이동](https://github.com/msp-architect-2026/kim-minji/wiki) |
+| 🔗 API 명세 | [API 명세 보기](https://github.com/msp-architect-2026/kim-minji/wiki/API-%EB%AA%85%EC%84%B8) |
+| 🗂 데이터 모델 및 ERD | [데이터 모델 보기](https://github.com/msp-architect-2026/kim-minji/wiki/%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%AA%A8%EB%8D%B8-%EB%B0%8F-ERD) |
+| 🛠 트러블슈팅 | [트러블슈팅 보기](https://github.com/msp-architect-2026/kim-minji/wiki/%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85) |
+
 
 ---
 
@@ -142,5 +146,6 @@ GitOps 기반 인프라 설계 플랫폼
 # 3. Helm 기반 자동 배포
 ```
 
-📖 전체 설치 및 검증 절차는  
-➡ **[설치 가이드 문서 바로가기](../../wiki/프로젝트/설치-가이드)**
+
+
+📖 전체 설치 및 검증 절차는 **[설치 가이드](https://github.com/msp-architect-2026/kim-minji/wiki/%EC%84%A4%EC%B9%98-%EA%B0%80%EC%9D%B4%EB%93%9C)** 에 정리되어 있습니다.
