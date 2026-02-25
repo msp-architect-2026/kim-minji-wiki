@@ -37,20 +37,25 @@ GitOps 기반 인프라 설계 플랫폼
 <br>
 (데모 스크린샷 추가 예정 1.사용자 업로드 화면  2.딥러닝 추론 결과  3.Grafana 모니터링)
 <br>
+<br>
 
 ---
 
 ## 🧠 핵심 기능
 
+<br>
 
 - 📷 웨이퍼 이미지 업로드 및 저장
 - 🤖 딥러닝 모델 기반 9종 불량 자동 분류
 - 📊 추론 결과 대시보드 시각화
 - 📦 추론 이력 저장 및 조회 API 제공
 
+<br>
+
 ---
 
 ## 🧱 기술 스택
+<br>
 
 ### 🖥 Backend
 <p>
@@ -89,20 +94,27 @@ GitOps 기반 인프라 설계 플랫폼
 <img src="https://img.shields.io/badge/Sealed%20Secrets-Encrypted-blue?style=for-the-badge"/>
 </p>
 
+<br>
+
 ---
 
 ## ⚡ 핵심 설계 포인트
 
+<br>
 
 - 🎯 **워크로드 격리**: Node Affinity + Taints/Tolerations로 AI 추론 전용 노드 배치
 - 🩺 **자가 치유 & 고가용성**: Liveness/Readiness Probe + HPA 기반 동적 스케일링
 - 🔐 **Zero-Trust 보안 구조**: Sealed Secrets + NetworkPolicy 기반 통신 최소화
 - 🧯 **장애 전파 방지**: Resilience4j Circuit Breaker + Fallback 전략 적용
 
+<br>
+
 ---
 
 
 ## 🧩 하드웨어 토폴로지
+
+<br>
 
 | 노드 유형 | 역할 | 주요 워크로드 |
 |------------|------------|----------------|
@@ -113,8 +125,9 @@ GitOps 기반 인프라 설계 플랫폼
 
 
 
-
 📖 상세 하드웨어 사양 및 리소스 구성은 **[개발 환경](https://github.com/msp-architect-2026/kim-minji/wiki/%EA%B0%9C%EB%B0%9C-%ED%99%98%EA%B2%BD)** 에 정리되어 있습니다.
+
+<br>
 
 ---
 
@@ -125,6 +138,7 @@ GitOps 기반 인프라 설계 플랫폼
 <img width="1584" height="1063" src="https://github.com/user-attachments/assets/96727804-3bd2-48c1-baa9-d8f516e42605" />
 
 <br>
+<br>
 
 ### 🔄 애플리케이션 흐름
 
@@ -134,6 +148,8 @@ GitOps 기반 인프라 설계 플랫폼
 
 ## 📚 문서 안내
 
+<br>
+
 | 문서 | 바로가기 |
 |------|----------|
 | 📖 Wiki 전체 문서 | [Wiki 이동](https://github.com/msp-architect-2026/kim-minji/wiki) |
@@ -141,10 +157,12 @@ GitOps 기반 인프라 설계 플랫폼
 | 🗂 데이터 모델 및 ERD | [데이터 모델 보기](https://github.com/msp-architect-2026/kim-minji/wiki/%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%AA%A8%EB%8D%B8-%EB%B0%8F-ERD) |
 | 🛠 트러블슈팅 | [트러블슈팅 보기](https://github.com/msp-architect-2026/kim-minji/wiki/%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85) |
 
+<br>
 
 ---
 
 ## ⚙ Quick Start
+<br>
 
 ```bash
 # 1. k3s 클러스터 준비
@@ -155,3 +173,5 @@ GitOps 기반 인프라 설계 플랫폼
 
 
 📖 전체 설치 및 검증 절차는 **[설치 가이드](https://github.com/msp-architect-2026/kim-minji/wiki/%EC%84%A4%EC%B9%98-%EA%B0%80%EC%9D%B4%EB%93%9C)** 에 정리되어 있습니다.
+
+<br>
