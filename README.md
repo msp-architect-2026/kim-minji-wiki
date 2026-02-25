@@ -2,7 +2,7 @@
 <!--           HEADER               -->
 <!-- =============================== -->
 
-<h1 align="center">🧠 On-Premise Deep Learning Inference Infrastructure for Wafer Defect Classification</h1>
+<h1 align="center"> On-Premise Deep Learning Inference Infrastructure for Wafer Defect Classification</h1>
 
 <p align="center">
 반도체 웨이퍼 불량 분류를 위한 딥러닝 추론 서비스를
