@@ -38,7 +38,7 @@ GitOps 기반 인프라 설계 플랫폼
 
 
 - 📷 웨이퍼 이미지 업로드 및 저장
-- 🤖 AI 기반 9종 불량 자동 분류
+- 🤖 딥러닝 모델 기반 9종 불량 자동 분류
 - 📊 추론 결과 대시보드 시각화
 - 📦 추론 이력 저장 및 조회 API 제공
 
@@ -46,27 +46,40 @@ GitOps 기반 인프라 설계 플랫폼
 
 ## 🧱 기술 스택
 
-<p align="center">
-
+### 🖥 Backend
+<p>
 <img src="https://img.shields.io/badge/Spring%20Boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white"/>
-<img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB"/>
-<img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white"/>
 <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white"/>
+</p>
 
-<br>
+### 🎨 Frontend
+<p>
+<img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB"/>
+</p>
 
+### 🤖 AI Serving
+<p>
+<img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white"/>
+</p>
+
+### ☁ Infrastructure & GitOps
+<p>
 <img src="https://img.shields.io/badge/k3s-FFC61C?style=for-the-badge&logo=kubernetes&logoColor=black"/>
 <img src="https://img.shields.io/badge/Helm-0F1689?style=for-the-badge&logo=helm&logoColor=white"/>
 <img src="https://img.shields.io/badge/ArgoCD-FE5D26?style=for-the-badge&logo=argo&logoColor=white"/>
 <img src="https://img.shields.io/badge/MinIO-C72E49?style=for-the-badge&logo=minio&logoColor=white"/>
+</p>
 
-<br>
-
+### 📊 Observability
+<p>
 <img src="https://img.shields.io/badge/Prometheus-E6522C?style=for-the-badge&logo=prometheus&logoColor=white"/>
 <img src="https://img.shields.io/badge/Grafana-F46800?style=for-the-badge&logo=grafana&logoColor=white"/>
+</p>
+
+### 🔐 Reliability & Security
+<p>
 <img src="https://img.shields.io/badge/Resilience4j-Circuit%20Breaker-yellow?style=for-the-badge"/>
 <img src="https://img.shields.io/badge/Sealed%20Secrets-Encrypted-blue?style=for-the-badge"/>
-
 </p>
 
 ---
@@ -81,13 +94,14 @@ GitOps 기반 인프라 설계 플랫폼
 
 ---
 
+
 ## 🧩 하드웨어 토폴로지
 
 | 노드 유형 | 역할 | 주요 워크로드 |
 |------------|------------|----------------|
-| Control Plane | 클러스터 관리 및 메인 애플리케이션 | k3s server, Spring Boot, MySQL, ArgoCD |
-| Worker Node | 스토리지 및 관측 | MinIO, Prometheus, Grafana, CI Runner |
-| AI Worker | AI 추론 전용 노드 | FastAPI (Taint/Toleration 적용) |
+| Control Plane | 클러스터 관리 및 메인 애플리케이션 | <img src="https://img.shields.io/badge/k3s-FFC61C?style=flat-square&logo=kubernetes&logoColor=black"/> <img src="https://img.shields.io/badge/SpringBoot-6DB33F?style=flat-square&logo=springboot&logoColor=white"/> <img src="https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=mysql&logoColor=white"/> |
+| Worker Node | 스토리지 및 관측 | <img src="https://img.shields.io/badge/MinIO-C72E49?style=flat-square&logo=minio&logoColor=white"/> <img src="https://img.shields.io/badge/Prometheus-E6522C?style=flat-square&logo=prometheus&logoColor=white"/> <img src="https://img.shields.io/badge/Grafana-F46800?style=flat-square&logo=grafana&logoColor=white"/> |
+| AI Worker | AI 추론 전용 노드 | <img src="https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white"/> <img src="https://img.shields.io/badge/Taints%20%26%20Tolerations-Isolated-orange?style=flat-square"/> |
 
 📖 상세 하드웨어 사양 및 리소스 구성은  
 ➡ **[개발 환경 문서에서 확인](../../wiki/기술-문서/개발-환경)**
