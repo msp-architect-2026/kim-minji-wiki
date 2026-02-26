@@ -105,7 +105,7 @@ GitOps 기반 인프라 설계 플랫폼
 <img src="https://img.shields.io/badge/Sealed%20Secrets-Encrypted-blue?style=for-the-badge"/>
 </p>
 
-<br>
+
 
 ---
 
