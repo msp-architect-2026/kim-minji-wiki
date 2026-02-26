@@ -50,6 +50,9 @@ GitOps 기반 인프라 설계 플랫폼
 - 📊 추론 결과 대시보드 시각화
 - 📦 추론 이력 저장 및 조회 API 제공
 
+
+
+
 <br>
 
 ---
@@ -93,6 +96,21 @@ GitOps 기반 인프라 설계 플랫폼
 <img src="https://img.shields.io/badge/Resilience4j-Circuit%20Breaker-yellow?style=for-the-badge"/>
 <img src="https://img.shields.io/badge/Sealed%20Secrets-Encrypted-blue?style=for-the-badge"/>
 </p>
+
+<br>
+
+---
+
+## 🛠️ AI Model Integration (Self-Hosted Inference)
+
+> 본 시스템은 외부 API(OpenAI, Cloud Vision 등)에 의존하지 않고, **클러스터 내부에서 직접 딥러닝 모델을 서빙**합니다. <br> 이를 통해 공정 데이터의 외부 유출을 원천 차단하고 오프라인 환경에서도 안정적인 추론을 보장합니다. 
+
+<br>
+
+- **내장형 추론 엔진**: CNN 기반 웨이퍼 결함 분류 모델을 FastAPI 컨테이너에 직접 로드하여 실행 
+- **데이터 보안성**: 모든 이미지 처리 및 분석이 클러스터 내부(On-Premise)에서 완결되어 외부 통신 발생 안 함 
+- **최적화된 아키텍처**: Apple Silicon(ARM64) 환경에 최적화된 TensorFlow/Keras 모델 포맷(H5) 사용 
+- **고성능 비동기 처리**: FastAPI와 비동기 추론 로직을 결합하여 초저지연 결과 반환 (Avg. < 200ms) 
 
 <br>
 
