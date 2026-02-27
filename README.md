@@ -4,24 +4,35 @@
 
 <h1 align="center"> On-Premise Deep Learning Inference Infrastructure for Wafer Defect Classification</h1>
 
-<p align="center">
-반도체 웨이퍼 불량 분류를 위한 딥러닝 추론 서비스를
-멀티노드 k3s 환경에서 안정적으로 운영하기 위한
-GitOps 기반 인프라 설계 플랫폼
-</p>
+
+<br>
+
+
+
+
 
 <p align="center">
 
-<img src="https://img.shields.io/badge/Domain-Semiconductor-blueviolet?style=for-the-badge" />
-<img src="https://img.shields.io/badge/AI-9%20Defect%20Classes-success?style=for-the-badge" />
-<img src="https://img.shields.io/badge/Cluster-k3s-blue?style=for-the-badge" />
-<img src="https://img.shields.io/badge/GitOps-ArgoCD-orange?style=for-the-badge" />
-<img src="https://img.shields.io/badge/Architecture-Microservice-purple?style=for-the-badge" />
-<img src="https://img.shields.io/badge/Deployment-Helm-informational?style=for-the-badge" />
-<img src="https://img.shields.io/badge/Observability-Prometheus%20%7C%20Grafana-red?style=for-the-badge" />
-<img src="https://img.shields.io/badge/Security-Zero%20Trust-critical?style=for-the-badge" />
+<img src="https://img.shields.io/badge/SpringBoot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white"/>
+<img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB"/>
+<img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white"/>
+<img src="https://img.shields.io/badge/k3s-FFC61C?style=for-the-badge&logo=kubernetes&logoColor=black"/>
+<img src="https://img.shields.io/badge/Helm-0F1689?style=for-the-badge&logo=helm&logoColor=white"/>
+<img src="https://img.shields.io/badge/ArgoCD-FE5D26?style=for-the-badge&logo=argo&logoColor=white"/>  <br>
+<img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white"/>
+<img src="https://img.shields.io/badge/MinIO-C72E49?style=for-the-badge&logo=minio&logoColor=white"/>
+<img src="https://img.shields.io/badge/GitLabCI-FCA121?style=for-the-badge&logo=gitlab&logoColor=white"/>
+<img src="https://img.shields.io/badge/Prometheus-E6522C?style=for-the-badge&logo=prometheus&logoColor=white"/>
+<img src="https://img.shields.io/badge/Grafana-F46800?style=for-the-badge&logo=grafana&logoColor=white"/>
 
 </p>
+
+
+
+
+
+
+
 
 ---
 
@@ -65,49 +76,6 @@ GitOps 기반 인프라 설계 플랫폼
 
 ---
 
-## 🧱 기술 스택
-
-
-### Backend
-<p>
-<img src="https://img.shields.io/badge/Spring%20Boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white"/>
-<img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white"/>
-</p>
-
-### Frontend
-<p>
-<img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB"/>
-</p>
-
-### AI Serving
-<p>
-<img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white"/>
-</p>
-
-### Infrastructure & GitOps
-<p>
-<img src="https://img.shields.io/badge/k3s-FFC61C?style=for-the-badge&logo=kubernetes&logoColor=black"/>
-<img src="https://img.shields.io/badge/Helm-0F1689?style=for-the-badge&logo=helm&logoColor=white"/>
-<img src="https://img.shields.io/badge/ArgoCD-FE5D26?style=for-the-badge&logo=argo&logoColor=white"/>
-<img src="https://img.shields.io/badge/MinIO-C72E49?style=for-the-badge&logo=minio&logoColor=white"/>
-<img src="https://img.shields.io/badge/GitLab%20CI-FCA121?style=for-the-badge&logo=gitlab&logoColor=white"/>
-</p>
-
-### Observability
-<p>
-<img src="https://img.shields.io/badge/Prometheus-E6522C?style=for-the-badge&logo=prometheus&logoColor=white"/>
-<img src="https://img.shields.io/badge/Grafana-F46800?style=for-the-badge&logo=grafana&logoColor=white"/>
-</p>
-
-### Reliability & Security
-<p>
-<img src="https://img.shields.io/badge/Resilience4j-Circuit%20Breaker-yellow?style=for-the-badge"/>
-<img src="https://img.shields.io/badge/Sealed%20Secrets-Encrypted-blue?style=for-the-badge"/>
-</p>
-
-
-
----
 
 ## 🛠️ AI Model Integration (Self-Hosted Inference)
 
@@ -174,20 +142,7 @@ GitOps 기반 인프라 설계 플랫폼
 
 <img width="1980" height="998" src="https://github.com/user-attachments/assets/e75e5d05-6183-46eb-8942-942e7a19f3bb" />
 
----
 
-## 📚 문서 안내
-
-<br>
-
-| 문서 | 바로가기 |
-|------|----------|
-| 📖 Wiki 전체 문서 | [Wiki 이동](https://github.com/msp-architect-2026/kim-minji/wiki) |
-| 🔗 API 명세 | [API 명세 보기](https://github.com/msp-architect-2026/kim-minji/wiki/API-Specification) |
-| 🗂 데이터 모델 및 ERD | [데이터 모델 보기](https://github.com/msp-architect-2026/kim-minji/wiki/Data-Model-and-ERD) |
-| 🛠 트러블슈팅 | [트러블슈팅 보기](https://github.com/msp-architect-2026/kim-minji/wiki/Troubleshooting) |
-
-<br>
 
 ---
 
@@ -205,3 +160,22 @@ GitOps 기반 인프라 설계 플랫폼
 전체 설치 및 검증 절차는 **[설치 가이드](https://github.com/msp-architect-2026/kim-minji/wiki/Installation-Guide)** 에 정리되어 있습니다.
 
 <br>
+
+
+---
+
+## 📚 문서 안내
+
+<br>
+
+| 문서 | 바로가기 |
+|------|----------|
+| 📖 Wiki 전체 문서 | [Wiki 이동](https://github.com/msp-architect-2026/kim-minji/wiki) |
+| 🔗 API 명세 | [API 명세 보기](https://github.com/msp-architect-2026/kim-minji/wiki/API-Specification) |
+| 🗂 데이터 모델 및 ERD | [데이터 모델 보기](https://github.com/msp-architect-2026/kim-minji/wiki/Data-Model-and-ERD) |
+| 🛠 트러블슈팅 | [트러블슈팅 보기](https://github.com/msp-architect-2026/kim-minji/wiki/Troubleshooting) |
+
+<br>
+
+
+
