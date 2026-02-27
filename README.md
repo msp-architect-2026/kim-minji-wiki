@@ -113,6 +113,9 @@ GitOps 기반 인프라 설계 플랫폼
 
 > 본 시스템은 외부 API(OpenAI, Cloud Vision 등)에 의존하지 않고, **클러스터 내부에서 직접 딥러닝 모델을 서빙**합니다. <br> 이를 통해 공정 데이터의 외부 유출을 원천 차단하고 오프라인 환경에서도 안정적인 추론을 보장합니다. 
 
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/e37f679b-106c-47f8-a7c7-8876c58e53a6" width="80%" />
+</p>
 
 
 - **내장형 추론 엔진**: CNN 기반 웨이퍼 결함 분류 모델을 FastAPI 컨테이너에 직접 로드하여 실행 
