@@ -141,27 +141,29 @@
 
 
 
-상세 하드웨어 사양 및 리소스 구성은 **[개발 환경](https://github.com/msp-architect-2026/kim-minji/wiki/Development-Environment)** 에 정리되어 있습니다.
-
-
 
 ---
 
 
 
-## ⚙ Quick Start
-<br>
+## ⚙️ Quick Start
+
+전체 설치 및 검증 절차는 [설치 가이드](https://github.com/msp-architect-2026/kim-minji/wiki/Installation-Guide)에 상세히 정리되어 있습니다. 아래는 빠른 배포를 위한 요약 명령어입니다.
 
 ```bash
-# 1. k3s 클러스터 준비
-# 2. ArgoCD 애플리케이션 등록
-# 3. Helm 기반 자동 배포
+# 1. Repository Clone
+$git clone [https://github.com/msp-architect-2026/kim-minji.git$](https://github.com/msp-architect-2026/kim-minji.git$) cd kim-minji
+
+# 2. k3s 클러스터 준비 (Master 노드 기준)
+$ curl -sfL [https://get.k3s.io](https://get.k3s.io) | sh -
+
+# 3. ArgoCD 네임스페이스 생성 및 설치
+$ kubectl create namespace argocd
+$ kubectl apply -n argocd -f [https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml](https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml)
+
+# 4. Helm 차트를 통한 GitOps 자동 배포 연동
+$ kubectl apply -f argocd/application.yaml
 ```
-
-
-
-전체 설치 및 검증 절차는 **[설치 가이드](https://github.com/msp-architect-2026/kim-minji/wiki/Installation-Guide)** 에 정리되어 있습니다.
-
 
 
 ---
@@ -176,7 +178,6 @@
 | 🖥️ 개발 환경 | [개발 환경 보기](https://github.com/msp-architect-2026/kim-minji/wiki/Development-Environment) |
 | 🔗 API 명세 | [API 명세 보기](https://github.com/msp-architect-2026/kim-minji/wiki/API-Specification) |
 | 🗂 데이터 모델 및 ERD | [데이터 모델 보기](https://github.com/msp-architect-2026/kim-minji/wiki/Data-Model-and-ERD) |
-| ⚙️ 설치 가이드 | [설치 가이드 보기](https://github.com/msp-architect-2026/kim-minji/wiki/Installation-Guide) |
 | 🛠 트러블슈팅 | [트러블슈팅 보기](https://github.com/msp-architect-2026/kim-minji/wiki/Troubleshooting) |
 
 <br>
