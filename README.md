@@ -77,6 +77,24 @@
 ---
 
 
+## 🏗️ 아키텍처
+
+### 시스템 아키텍처
+
+<img width="1584" height="1063" src="https://github.com/user-attachments/assets/96727804-3bd2-48c1-baa9-d8f516e42605" />
+
+<br>
+<br>
+
+### 애플리케이션 흐름
+
+<img width="1980" height="998" src="https://github.com/user-attachments/assets/e75e5d05-6183-46eb-8942-942e7a19f3bb" />
+
+
+
+---
+
+
 ## 🛠️ AI Model Integration (Self-Hosted Inference)
 
 > 본 시스템은 외부 API(OpenAI, Cloud Vision 등)에 의존하지 않고, **클러스터 내부에서 직접 딥러닝 모델을 서빙**합니다. <br> 이를 통해 공정 데이터의 외부 유출을 원천 차단하고 오프라인 환경에서도 안정적인 추론을 보장합니다. 
@@ -129,22 +147,7 @@
 
 ---
 
-## 🏗️ 아키텍처
 
-### 시스템 아키텍처
-
-<img width="1584" height="1063" src="https://github.com/user-attachments/assets/96727804-3bd2-48c1-baa9-d8f516e42605" />
-
-<br>
-<br>
-
-### 애플리케이션 흐름
-
-<img width="1980" height="998" src="https://github.com/user-attachments/assets/e75e5d05-6183-46eb-8942-942e7a19f3bb" />
-
-
-
----
 
 ## ⚙ Quick Start
 <br>
@@ -159,7 +162,6 @@
 
 전체 설치 및 검증 절차는 **[설치 가이드](https://github.com/msp-architect-2026/kim-minji/wiki/Installation-Guide)** 에 정리되어 있습니다.
 
-<br>
 
 
 ---
