@@ -155,7 +155,7 @@ GitOps 기반 인프라 설계 플랫폼
 
 
 
-상세 하드웨어 사양 및 리소스 구성은 **[개발 환경](https://github.com/msp-architect-2026/kim-minji/wiki/%EA%B0%9C%EB%B0%9C-%ED%99%98%EA%B2%BD)** 에 정리되어 있습니다.
+상세 하드웨어 사양 및 리소스 구성은 **[개발 환경](https://github.com/msp-architect-2026/kim-minji/wiki/Development-Environment)** 에 정리되어 있습니다.
 
 
 
@@ -183,9 +183,9 @@ GitOps 기반 인프라 설계 플랫폼
 | 문서 | 바로가기 |
 |------|----------|
 | 📖 Wiki 전체 문서 | [Wiki 이동](https://github.com/msp-architect-2026/kim-minji/wiki) |
-| 🔗 API 명세 | [API 명세 보기](https://github.com/msp-architect-2026/kim-minji/wiki/API-%EB%AA%85%EC%84%B8) |
-| 🗂 데이터 모델 및 ERD | [데이터 모델 보기](https://github.com/msp-architect-2026/kim-minji/wiki/%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%AA%A8%EB%8D%B8-%EB%B0%8F-ERD) |
-| 🛠 트러블슈팅 | [트러블슈팅 보기](https://github.com/msp-architect-2026/kim-minji/wiki/%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85) |
+| 🔗 API 명세 | [API 명세 보기](https://github.com/msp-architect-2026/kim-minji/wiki/API-Specification) |
+| 🗂 데이터 모델 및 ERD | [데이터 모델 보기](https://github.com/msp-architect-2026/kim-minji/wiki/Data-Model-and-ERD) |
+| 🛠 트러블슈팅 | [트러블슈팅 보기](https://github.com/msp-architect-2026/kim-minji/wiki/Troubleshooting) |
 
 <br>
 
@@ -202,6 +202,6 @@ GitOps 기반 인프라 설계 플랫폼
 
 
 
-전체 설치 및 검증 절차는 **[설치 가이드](https://github.com/msp-architect-2026/kim-minji/wiki/%EC%84%A4%EC%B9%98-%EA%B0%80%EC%9D%B4%EB%93%9C)** 에 정리되어 있습니다.
+전체 설치 및 검증 절차는 **[설치 가이드](https://github.com/msp-architect-2026/kim-minji/wiki/Installation-Guide)** 에 정리되어 있습니다.
 
 <br>
