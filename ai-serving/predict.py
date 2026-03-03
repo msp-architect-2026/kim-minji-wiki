@@ -1,29 +1,40 @@
-from tensorflow.keras.models import load_model
+import os
 import numpy as np
+from tensorflow.keras.models import load_model
 from PIL import Image
 
-# 클래스 이름 정의
-CLASS_NAMES = [
-    "Center", "Donut", "Edge-Loc", "Edge-Ring", "Loc",
-    "Near-full", "Random", "Scratch", "none"
-]
+MODEL_PATH = os.getenv("MODEL_PATH", "wafer_defect_model.h5")
 
-# 모델 로드
-model = load_model("wafer_defect_model.h5")
+model = None
 
-# 이미지 경로를 받아 예측 수행
+
+def get_model():
+    global model
+
+    if model is None:
+        if not os.path.exists(MODEL_PATH):
+            raise FileNotFoundError(f"Model file not found: {MODEL_PATH}")
+
+        model = load_model(MODEL_PATH)
+
+    return model
+
+
+def preprocess_image(image_path):
+    img = Image.open(image_path).convert("L")
+    img = img.resize((28, 28))
+    img_array = np.array(img) / 255.0
+    img_array = img_array.reshape(1, 28, 28, 1)
+    return img_array
+
+
 def predict_from_file(image_path):
-    # 이미지 로드 후 크기 변경 (26x26)
-    image = Image.open(image_path).convert("RGB").resize((26, 26))
-    image = np.array(image) / 255.0  # 정규화
+    model_instance = get_model()
 
-    # 이미지 채널 수 맞추기 (1, 26, 26, 3) -> (1, 26, 26, 3)
-    image = np.expand_dims(image, axis=0)  # 배치 차원 추가
-    image = image.reshape(1, 26, 26, 3)
+    img_array = preprocess_image(image_path)
+    predictions = model_instance.predict(img_array)
 
-    preds = model.predict(image)
-    label_index = np.argmax(preds)
-    confidence = preds[0][label_index]
+    predicted_class = int(np.argmax(predictions))
+    confidence = float(np.max(predictions))
 
-    # numpy.float32를 float로 변환
-    return CLASS_NAMES[label_index], float(confidence)
+    return predicted_class, confidence
