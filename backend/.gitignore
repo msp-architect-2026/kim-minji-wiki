@@ -1,17 +1,13 @@
-.DS_Store
-.venv
-__pycache__
-*.pyc
-.idea/
-
-
 HELP.md
 .gradle
 build/
-.gradle/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
+backend/src/main/resources/aws-iot-cert/
+*.pem
+*.key
+*.crt
 
 ### STS ###
 .apt_generated
