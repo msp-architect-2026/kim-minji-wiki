@@ -1,0 +1,11 @@
+stages:
+  - hello
+
+hello-job:
+  stage: hello
+  tags:
+    - arm64
+    - docker
+  script:
+    - echo "Runner working on $(uname -m)"
+    - docker info
