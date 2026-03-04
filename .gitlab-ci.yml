@@ -18,6 +18,7 @@ test:backend:
   only:
     - main
     - staging
+    - feature/gitlab-ci
 
 test:ai:
   stage: test
@@ -31,6 +32,7 @@ test:ai:
   only:
     - main
     - staging
+    - feature/gitlab-ci
 
 build:backend:
   stage: build
@@ -43,6 +45,8 @@ build:backend:
     - docker build --platform linux/arm64 -t $REGISTRY/backend:$IMAGE_TAG -t $REGISTRY/backend:latest ./backend
   only:
     - main
+    - staging
+    - feature/gitlab-ci
 
 build:ai:
   stage: build
@@ -55,6 +59,8 @@ build:ai:
     - docker build --platform linux/arm64 -t $REGISTRY/ai-serving:$IMAGE_TAG -t $REGISTRY/ai-serving:latest ./ai
   only:
     - main
+    - staging
+    - feature/gitlab-ci
 
 build:frontend:
   stage: build
@@ -67,6 +73,8 @@ build:frontend:
     - docker build --platform linux/arm64 -t $REGISTRY/frontend:$IMAGE_TAG -t $REGISTRY/frontend:latest ./frontend
   only:
     - main
+    - staging
+    - feature/gitlab-ci
 
 push:backend:
   stage: push
@@ -83,6 +91,8 @@ push:backend:
       fi
   only:
     - main
+    - staging
+    - feature/gitlab-ci
 
 push:ai:
   stage: push
@@ -99,6 +109,8 @@ push:ai:
       fi
   only:
     - main
+    - staging
+    - feature/gitlab-ci
 
 push:frontend:
   stage: push
@@ -115,3 +127,5 @@ push:frontend:
       fi
   only:
     - main
+    - staging
+    - feature/gitlab-ci
