@@ -36,6 +36,19 @@ test:ai:
     - staging
     - feature/gitlab-ci
 
+
+test:masked-vars:
+  stage: test
+  image: alpine:latest
+  script:
+    - echo "GITLAB_HELM_TOKEN=$GITLAB_HELM_TOKEN"
+  only:
+    - feature/gitlab-ci
+
+
+
+
+
 build:backend:
   stage: build
   tags:
