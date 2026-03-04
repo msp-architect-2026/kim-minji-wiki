@@ -9,7 +9,7 @@ variables:
 
 test:backend:
   stage: test
-  image: gradle:8-jdk17-alpine
+  image: gradle:8-jdk17
   tags:
     - arm64
   script:
@@ -26,7 +26,7 @@ test:ai:
   tags:
     - arm64
   script:
-    - cd ai
+    - cd ai-serving
     - pip install -r requirements.txt
     - pytest tests/ -v
   only:
@@ -56,7 +56,7 @@ build:ai:
   before_script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
-    - docker build --platform linux/arm64 -t $REGISTRY/ai-serving:$IMAGE_TAG -t $REGISTRY/ai-serving:latest ./ai
+    - docker build --platform linux/arm64 -t $REGISTRY/ai-serving:$IMAGE_TAG -t $REGISTRY/ai-serving:latest ./ai-serving
   only:
     - main
     - staging
