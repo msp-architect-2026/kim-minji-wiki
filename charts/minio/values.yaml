@@ -1,0 +1,59 @@
+nameOverride: ""
+fullnameOverride: ""
+
+image:
+  repository: minio/minio
+  tag: "RELEASE.2024-01-16T16-07-38Z"
+  pullPolicy: IfNotPresent
+
+replicaCount: 1
+
+service:
+  type: ClusterIP
+  apiPort: 9000
+  consolePort: 9001
+  exposeConsole: true
+
+# MinIO 서버 구동 옵션
+mode:
+  # "server /data" 형태
+  dataDir: /data
+
+# PVC
+persistence:
+  enabled: true
+  storageClassName: ""     # k3s local-path 쓰면 비워도 됨
+  accessModes: ["ReadWriteOnce"]
+  size: 10Gi
+
+resources:
+  requests:
+    cpu: 200m
+    memory: 256Mi
+  limits:
+    cpu: 600m
+    memory: 512Mi
+
+# Secret은 SealedSecret으로 만들 예정이므로, 여기서는 "참조할 Secret 이름/키"만 고정
+auth:
+  existingSecret:
+    name: minio-secret
+    accessKeyKey: accessKey
+    secretKeyKey: secretKey
+
+# health: MinIO는 /minio/health/* 제공
+probes:
+  liveness:
+    enabled: true
+    path: /minio/health/live
+    initialDelaySeconds: 15
+    periodSeconds: 10
+    timeoutSeconds: 2
+    failureThreshold: 6
+  readiness:
+    enabled: true
+    path: /minio/health/ready
+    initialDelaySeconds: 10
+    periodSeconds: 10
+    timeoutSeconds: 2
+    failureThreshold: 6

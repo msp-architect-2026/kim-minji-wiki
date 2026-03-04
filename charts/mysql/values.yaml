@@ -1,0 +1,56 @@
+nameOverride: ""
+fullnameOverride: ""
+
+image:
+  repository: mysql
+  tag: "8.0"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 3306
+  # headless를 쓸지 여부(기본 false)
+  headless: false
+
+persistence:
+  enabled: true
+  storageClassName: ""
+  accessModes: ["ReadWriteOnce"]
+  size: 10Gi
+
+resources:
+  requests:
+    cpu: 200m
+    memory: 512Mi
+  limits:
+    cpu: 1000m
+    memory: 1Gi
+
+# 민감정보는 Secret로 분리 (추후 SealedSecret로 감싸기 쉬운 형태)
+secret:
+  name: mysql-secret
+  keys:
+    rootPassword: MYSQL_ROOT_PASSWORD
+    database: MYSQL_DATABASE
+    username: MYSQL_USER
+    password: MYSQL_PASSWORD
+
+config:
+  name: mysql-config
+  keys:
+    host: MYSQL_HOST
+    port: MYSQL_PORT
+
+# probe
+probes:
+  enabled: true
+  readiness:
+    initialDelaySeconds: 10
+    periodSeconds: 10
+  liveness:
+    initialDelaySeconds: 30
+    periodSeconds: 20
+
+
+initSchema:
+  enabled: false
