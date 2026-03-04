@@ -1,0 +1,133 @@
+stages:
+  - test
+  - build
+  - push
+
+variables:
+  REGISTRY: $CI_REGISTRY_IMAGE
+  IMAGE_TAG: $CI_COMMIT_SHA
+
+test:backend:
+  stage: test
+  image: gradle:8-jdk17
+  tags:
+    - arm64
+  allow_failure: true
+  script:
+    - cd backend
+    - ./gradlew test --no-daemon
+  only:
+    - main
+    - staging
+    - feature/gitlab-ci
+
+test:ai:
+  stage: test
+  image: python:3.11-slim
+  tags:
+    - arm64
+  allow_failure: true
+  script:
+    - cd ai-serving
+    - pip install -r requirements.txt
+    - pytest tests/ -v
+  only:
+    - main
+    - staging
+    - feature/gitlab-ci
+
+build:backend:
+  stage: build
+  tags:
+    - arm64
+    - docker
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - docker build --platform linux/arm64 -t $REGISTRY/backend:$IMAGE_TAG -t $REGISTRY/backend:latest ./backend
+  only:
+    - main
+    - staging
+    - feature/gitlab-ci
+
+build:ai:
+  stage: build
+  tags:
+    - arm64
+    - docker
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - docker build --platform linux/arm64 -t $REGISTRY/ai-serving:$IMAGE_TAG -t $REGISTRY/ai-serving:latest ./ai-serving
+  only:
+    - main
+    - staging
+    - feature/gitlab-ci
+
+build:frontend:
+  stage: build
+  tags:
+    - arm64
+    - docker
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - docker build --platform linux/arm64 -t $REGISTRY/frontend:$IMAGE_TAG -t $REGISTRY/frontend:latest ./frontend
+  only:
+    - main
+    - staging
+    - feature/gitlab-ci
+
+push:backend:
+  stage: push
+  tags:
+    - arm64
+    - docker
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - docker push $REGISTRY/backend:$IMAGE_TAG
+    - |
+      if [ "$CI_COMMIT_BRANCH" = "main" ]; then
+        docker push $REGISTRY/backend:latest
+      fi
+  only:
+    - main
+    - staging
+    - feature/gitlab-ci
+
+push:ai:
+  stage: push
+  tags:
+    - arm64
+    - docker
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - docker push $REGISTRY/ai-serving:$IMAGE_TAG
+    - |
+      if [ "$CI_COMMIT_BRANCH" = "main" ]; then
+        docker push $REGISTRY/ai-serving:latest
+      fi
+  only:
+    - main
+    - staging
+    - feature/gitlab-ci
+
+push:frontend:
+  stage: push
+  tags:
+    - arm64
+    - docker
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - docker push $REGISTRY/frontend:$IMAGE_TAG
+    - |
+      if [ "$CI_COMMIT_BRANCH" = "main" ]; then
+        docker push $REGISTRY/frontend:latest
+      fi
+  only:
+    - main
+    - staging
+    - feature/gitlab-ci
