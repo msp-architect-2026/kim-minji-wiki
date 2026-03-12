@@ -171,6 +171,7 @@ Grafana  : http://grafana.wafer.local:32088
 | 문서 | 바로가기 |
 |------|----------|
 | 📖 Wiki 전체 문서 | [Wiki 이동](https://github.com/msp-architect-2026/kim-minji/wiki) |
+| 📋 칸반보드 | [칸반보드 이동](https://github.com/orgs/msp-architect-2026/projects/41) |
 | 🖥️ 개발 환경 | [개발 환경 보기](https://github.com/msp-architect-2026/kim-minji/wiki/Development-Environment) |
 | 🔗 API 명세 | [API 명세 보기](https://github.com/msp-architect-2026/kim-minji/wiki/API-Specification) |
 | 🗂 데이터 모델 및 ERD | [데이터 모델 보기](https://github.com/msp-architect-2026/kim-minji/wiki/Data-Model-and-ERD) |
