@@ -37,34 +37,50 @@
 
 ## ▍핵심 기능
 
-- 🤖 **딥러닝 모델 기반 9종 불량 자동 분류**
+### 1. 🤖 딥러닝 모델 기반 웨이퍼 결함 자동 분류
+WM-811K 데이터셋 기반으로 **9종 웨이퍼 패턴 결함 분류**를 수행합니다.
 
 | none | scratch | random |
-|------|--------|--------|
+|------|---------|--------|
 | <img src="https://github.com/user-attachments/assets/c031f298-ae7f-4d50-9ed4-65650c780f91" width="250"/> | <img src="https://github.com/user-attachments/assets/acacd5a2-510b-4341-a6ff-5562c0f581e6" width="250"/> | <img src="https://github.com/user-attachments/assets/be2e48a0-634f-4f22-ab43-d936e4950c7e" width="250"/> |
 
 | loc | donut | near-full |
-|-----|------|---------|
+|-----|-------|-----------|
 | <img src="https://github.com/user-attachments/assets/51864da6-016b-4b4d-8809-b110a397dd8b" width="250"/> | <img src="https://github.com/user-attachments/assets/ab4940bb-7843-42af-832d-856b4e518898" width="250"/> | <img src="https://github.com/user-attachments/assets/7a04f608-c9c7-4881-90e6-b4732247d4e5" width="250"/> |
 
 | center | edge-loc | edge-ring |
-|--------|--------|---------|
+|--------|----------|-----------|
 | <img src="https://github.com/user-attachments/assets/1b73faca-8462-4dcb-a312-44ef1c2af535" width="250"/> | <img src="https://github.com/user-attachments/assets/e6b8d7f2-a9e3-4110-ab03-3c56e304ac5f" width="250"/> | <img src="https://github.com/user-attachments/assets/d1a2fe6c-3042-494b-9fba-d28902837c8d" width="250"/> |
 
+<br>
+
+### 2. 📊 실시간 대시보드
+KPI 카드, 결함 분포, 일별 추이 차트를 통해 분석 현황을 실시간으로 확인할 수 있습니다.
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/70e48e28-f20f-4eac-9b41-fd6dc42535db" width="520"/>
+</p>
 
 
-  <br>
 
-- 📊 **추론 결과 대시보드 시각화**
-<img width="530" height="844" alt="analytics부분" src="https://github.com/user-attachments/assets/70e48e28-f20f-4eac-9b41-fd6dc42535db" />
+### 3. 📦 이력 관리 및 CSV 내보내기
+검색, 페이징, 날짜·결함 유형 필터를 지원하며 분석 이력을 CSV로 내보낼 수 있습니다.
 
-  <br>
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/e2cd6dae-b5f5-4023-a170-146092f67a2c" width="520"/>
+</p>
 
-- 📦 **추론 이력 저장 및 조회 API 제공**
-<img width="536" height="854" alt="records화면" src="https://github.com/user-attachments/assets/e2cd6dae-b5f5-4023-a170-146092f67a2c" />
 
- 
-  <br>
+
+### 4. 🔍 통합 모니터링
+Prometheus + Grafana 기반으로 **클러스터 상태, 애플리케이션 메트릭, 운영 로그**를 통합적으로 모니터링합니다.
+
+| 구분 | 화면 |
+|------|------|
+| **클러스터 모니터링** | <img src="https://github.com/user-attachments/assets/43bc87e9-7dd0-4e7c-bb94-7313614ac96e" width="520"/> |
+| **애플리케이션 메트릭** | <img src="https://github.com/user-attachments/assets/b75f66ed-9697-4a8e-b895-7796306a32a1" width="400"/> |
+| **로그 모니터링** | <img src="https://github.com/user-attachments/assets/4a3df507-cc5b-49b8-bcd5-0586cc79ccce" width="520"/> |
+
 
 ---
 
