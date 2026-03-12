@@ -194,6 +194,23 @@ Grafana  : http://grafana.wafer.local:32088
 
 ---
 
+
+## ▍Repository Structure
+
+본 프로젝트는 **서비스별 역할을 명확히 분리한 멀티 레포 구조**로 구성되어 있습니다.
+
+| Repository | 설명 |
+|------------|------|
+| 🧱 [kim-minji-infra](https://github.com/msp-architect-2026/kim-minji-infra) | k3s 클러스터 및 GitOps 인프라 구성 |
+| 🖥 [kim-minji-frontend](https://github.com/msp-architect-2026/kim-minji-frontend) | React 기반 웹 대시보드 |
+| ⚙️ [kim-minji-backend](https://github.com/msp-architect-2026/kim-minji-backend) | Spring Boot API 서버 |
+| 🧠 [kim-minji-ai](https://github.com/msp-architect-2026/kim-minji-ai) | FastAPI 기반 AI 추론 서비스 |
+| ⛵ [kim-minji-helm](https://github.com/msp-architect-2026/kim-minji-helm) | Kubernetes Helm Chart |
+
+
+
+---
+
 ## ▍문서 안내
 
 <br>
