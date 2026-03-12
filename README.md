@@ -38,7 +38,20 @@
 ## ▍핵심 기능
 
 - 🤖 **딥러닝 모델 기반 9종 불량 자동 분류**
-<img width="536" height="816" alt="none분석화면" src="https://github.com/user-attachments/assets/c031f298-ae7f-4d50-9ed4-65650c780f91" />
+
+| none | scratch | random |
+|------|--------|--------|
+| <img src="https://github.com/user-attachments/assets/c031f298-ae7f-4d50-9ed4-65650c780f91" width="250"/> | <img src="https://github.com/user-attachments/assets/acacd5a2-510b-4341-a6ff-5562c0f581e6" width="250"/> | <img src="https://github.com/user-attachments/assets/be2e48a0-634f-4f22-ab43-d936e4950c7e" width="250"/> |
+
+| loc | donut | near-full |
+|-----|------|---------|
+| <img src="https://github.com/user-attachments/assets/51864da6-016b-4b4d-8809-b110a397dd8b" width="250"/> | <img src="https://github.com/user-attachments/assets/ab4940bb-7843-42af-832d-856b4e518898" width="250"/> | <img src="https://github.com/user-attachments/assets/7a04f608-c9c7-4881-90e6-b4732247d4e5" width="250"/> |
+
+| center | edge-loc | edge-ring |
+|--------|--------|---------|
+| <img src="https://github.com/user-attachments/assets/1b73faca-8462-4dcb-a312-44ef1c2af535" width="250"/> | <img src="https://github.com/user-attachments/assets/e6b8d7f2-a9e3-4110-ab03-3c56e304ac5f" width="250"/> | <img src="https://github.com/user-attachments/assets/d1a2fe6c-3042-494b-9fba-d28902837c8d" width="250"/> |
+
+
 
   <br>
 
