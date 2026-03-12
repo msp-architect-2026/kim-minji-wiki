@@ -151,18 +151,33 @@
 전체 설치 및 검증 절차는 [설치 가이드](https://github.com/msp-architect-2026/kim-minji/wiki/Installation-Guide)에 상세히 정리되어 있습니다. 아래는 빠른 배포를 위한 요약 명령어입니다.
 
 ```bash
-# 1. Repository Clone
-$git clone [https://github.com/msp-architect-2026/kim-minji.git$](https://github.com/msp-architect-2026/kim-minji.git$) cd kim-minji
+# 1. Infrastructure Repository Clone
+$ git clone https://github.com/msp-architect-2026/kim-minji-infra.git
+$ cd kim-minji-infra
 
 # 2. k3s 클러스터 준비 (Master 노드 기준)
-$ curl -sfL [https://get.k3s.io](https://get.k3s.io) | sh -
+$ curl -sfL https://get.k3s.io | sh -
+$ kubectl get nodes
 
-# 3. ArgoCD 네임스페이스 생성 및 설치
+# 3. ArgoCD 설치
 $ kubectl create namespace argocd
-$ kubectl apply -n argocd -f [https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml](https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml)
+$ kubectl apply -n argocd \
+-f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+$ kubectl get pods -n argocd
 
-# 4. Helm 차트를 통한 GitOps 자동 배포 연동
+# 4. GitOps Application 배포
 $ kubectl apply -f argocd/application.yaml
+$ kubectl get applications -n argocd
+$ kubectl get pods -A
+
+
+# 5. 서비스 접속
+Frontend : http://app.wafer.local
+Backend  : http://api.wafer.local
+AI API   : http://ai.wafer.local
+Grafana  : http://grafana.wafer.local
+
+
 ```
 
 
