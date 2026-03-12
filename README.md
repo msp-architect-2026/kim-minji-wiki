@@ -1,7 +1,11 @@
-# On-Premise Deep Learning Inference Infrastructure for Wafer Defect Classification
+<!-- =============================== -->
+<!--           HEADER               -->
+<!-- =============================== -->
+
+<h1 align="center"> On-Premise Deep Learning Inference Infrastructure for Wafer Defect Classification</h1>
+
 
 <br>
-
 <p align="center">
 <img src="https://img.shields.io/badge/SpringBoot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white"/>
 <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB"/>
@@ -33,24 +37,20 @@
 
 ## ▍핵심 기능
 
-- 📷 **웨이퍼 이미지 업로드 및 저장**
-
-  (스크린샷 추가 예정)
-  <br>
-
 - 🤖 **딥러닝 모델 기반 9종 불량 자동 분류**
+<img width="536" height="816" alt="none분석화면" src="https://github.com/user-attachments/assets/c031f298-ae7f-4d50-9ed4-65650c780f91" />
 
-  (스크린샷 추가 예정)
   <br>
 
 - 📊 **추론 결과 대시보드 시각화**
+<img width="530" height="844" alt="analytics부분" src="https://github.com/user-attachments/assets/70e48e28-f20f-4eac-9b41-fd6dc42535db" />
 
-  (스크린샷 추가 예정)
   <br>
 
 - 📦 **추론 이력 저장 및 조회 API 제공**
+<img width="536" height="854" alt="records화면" src="https://github.com/user-attachments/assets/e2cd6dae-b5f5-4023-a170-146092f67a2c" />
 
-  (스크린샷 추가 예정)
+ 
   <br>
 
 ---
