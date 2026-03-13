@@ -60,22 +60,22 @@ WM-811K 데이터셋 기반으로 **9종 웨이퍼 패턴 결함 분류**를 수
 총 검사 수, 결함 수, 정상 수, 평균 신뢰도 등 핵심 KPI를 실시간으로 확인할 수 있습니다.
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/528a50c3-a73c-42ac-980a-80a9237098c5" width="720"/>
+  <img src="https://github.com/user-attachments/assets/528a50c3-a73c-42ac-980a-80a9237098c5" width="620"/>
 </p>
 
 ### 3. 📊 실시간 분석 대시보드
 KPI 카드, 결함 분포, 일별 추이 차트를 통해 분석 현황을 실시간으로 확인할 수 있습니다.
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/70e48e28-f20f-4eac-9b41-fd6dc42535db" width="520"/>
+  <img src="https://github.com/user-attachments/assets/70e48e28-f20f-4eac-9b41-fd6dc42535db" width="620"/>
 </p>
 
 ### 4. 📦 이력 관리 및 CSV 내보내기
-검색, 페이징, 날짜·결함 유형 필터를 지원하며 분석 이력을 날짜별로 CSV로 내보낼 수 있습니다.
+검색, 페이징, 날짜·결함 유형 필터를 지원하며 분석 이력을 날짜별로 CSV로 내보낼 수 있습니다. <br>
 각 항목 클릭 시 파일명, 예측 클래스, 신뢰도, 생성 시각을 상세 확인할 수 있습니다.
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/e2cd6dae-b5f5-4023-a170-146092f67a2c" width="520"/>
+  <img src="https://github.com/user-attachments/assets/e2cd6dae-b5f5-4023-a170-146092f67a2c" width="620"/>
 </p>
 
 
