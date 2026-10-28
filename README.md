@@ -100,7 +100,7 @@ Prometheus + Grafana 기반으로 **클러스터 상태, 애플리케이션 메�
 ---
 ## ▍문서 안내
 
-<br>
+
 
 | 문서 | 바로가기 |
 |------|----------|
@@ -137,28 +137,20 @@ Prometheus + Grafana 기반으로 **클러스터 상태, 애플리케이션 메�
 
 ## ▍아키텍처
 
-### 시스템 아키텍처
 
-<img width="1581" height="834" alt="시스템 아키텍처" src="https://github.com/user-attachments/assets/53c0c0ec-b606-4376-b7ad-e23d0385d8ff" />
 
+<img width="1536" height="930" alt="image" src="https://github.com/user-attachments/assets/c7340b3f-3c1f-469c-a1c1-0ceb9d38a5ac" />
 
 
 <br>
 <br>
 
-### 애플리케이션 흐름
-
-<img width="1980" height="998" alt="소프트웨어 아키텍처" src="https://github.com/user-attachments/assets/cce49766-5907-4668-b597-eefde7002dd5" />
 
 ---
 
 ## ▍AI Model Integration (Self-Hosted Inference)
 
 > 본 시스템은 외부 API(OpenAI, Cloud Vision 등)에 의존하지 않고, **클러스터 내부에서 직접 딥러닝 모델을 서빙**합니다. <br> 이를 통해 공정 데이터의 외부 유출을 원천 차단하고 오프라인 환경에서도 안정적인 추론을 보장합니다.
-
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/e37f679b-106c-47f8-a7c7-8876c58e53a6" width="80%" />
-</p>
 
 - **내장형 추론 엔진**: CNN 기반 웨이퍼 결함 분류 모델을 FastAPI 컨테이너에 직접 로드하여 실행
 - **데이터 보안성**: 모든 이미지 처리 및 분석이 클러스터 내부(On-Premise)에서 완결되어 외부 통신 발생 안 함
